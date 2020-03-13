@@ -18,7 +18,8 @@
  - `8760` basic-eureka
  - `8770` basic-zuul
  - `8780` basic-config
- 
+ - `8790` basic-auth
+
 ## Host配置
  - 127.0.0.1 zhouy.top
 

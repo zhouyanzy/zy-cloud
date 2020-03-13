@@ -1,20 +1,18 @@
+spring:
+  profiles:
+     active: jdbc
+  application:
+     name: basic-config
+  datasource:
+     url: jdbc:mysql://47.101.151.43:3306/config-jdbc?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
+     username: zy
+     password: 123456
+     driver-class-name: com.mysql.jdbc.Driver
+  cloud:
+     config:
+       label: master
+       server:
+         jdbc: true
 server:
   port: 8780
-
-spring:
-  application:
-    name: config-server
-  cloud:
-    label: master
-    config:
-      server:
-        git:
-          uri: https://github.com/zhouyanzy/zy-cloud.git
-          searchPaths: respo
-          username: zhouyanzy
-          password: zhouyan1217
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://zhouy.top:8760/eureka/
+spring.cloud.config.server.jdbc.sql: SELECT key1, value1 from config_properties where APPLICATION=? and PROFILE=? and LABEL=?

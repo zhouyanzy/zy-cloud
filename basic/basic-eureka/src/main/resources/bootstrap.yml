@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: basic-eureka
+  cloud:
+    config:
+      uri: http://zhouy.top:8780
+      fail-fast: true
+  profiles:
+    active: dev

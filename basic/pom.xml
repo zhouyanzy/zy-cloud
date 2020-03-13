@@ -10,7 +10,7 @@
 	<groupId>top.zhouy</groupId>
 	<artifactId>basic</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>basic-auth</name>
+	<name>basic</name>
 	<description>Demo project for Spring Boot</description>
 	<packaging>pom</packaging>
 
@@ -24,25 +24,6 @@
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-	</dependencies>
 
 	<build>
 		<plugins>
