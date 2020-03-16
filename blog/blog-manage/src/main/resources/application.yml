@@ -1,0 +1,32 @@
+server:
+  port: 8810
+spring:
+  application:
+     name: blog-manage
+  datasource:
+     url: jdbc:mysql://47.101.151.43:3306/blog?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
+     username: zy
+     password: 123456
+     driver-class-name: com.mysql.jdbc.Driver
+     type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    database: 1
+    host: 47.101.151.143
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://zhouy.top:8760/eureka/
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  typeAliasesPackage: top.zhouy.blogmanage.bean.entity
+  type-enums-package: top.zhouy.blogmanage.bean.type
