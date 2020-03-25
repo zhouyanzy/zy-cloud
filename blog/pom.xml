@@ -21,12 +21,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>top.zhouy</groupId>
-			<artifactId>common-response</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>top.zhouy</groupId>
 			<artifactId>util</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

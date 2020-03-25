@@ -19,10 +19,14 @@
  - `8770` basic-zuul
  - `8780` basic-config
  - `8790` basic-auth
+ - `8810` blog-manage
 
 ## Host配置
  - 127.0.0.1 zhouy.top
 
+## 参考项目
+ - blog-manage部分参考了dbblog
+ 
 ```
 /**
  * @author zhouy

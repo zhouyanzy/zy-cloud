@@ -53,7 +53,7 @@ public class MpGenerator {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);      // 表名生成策略
         strategy.setInclude(new String[] { "blog_article", "blog_article_category", "blog_category" });     // 需要生成的表
-        strategy.setTablePrefix(new String[] { "blog" });
+        //strategy.setTablePrefix(new String[] { "blog" });
         strategy.setSuperServiceClass(null);
         strategy.setSuperServiceImplClass(null);
         strategy.setSuperMapperClass(null);

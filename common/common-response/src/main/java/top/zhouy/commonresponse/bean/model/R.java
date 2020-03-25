@@ -1,109 +1,77 @@
 package top.zhouy.commonresponse.bean.model;
 
 
-import top.zhouy.commonresponse.exception.GlobalErrorCode;
+import top.zhouy.commonresponse.bean.enums.ErrorCode;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * 统一返回对象
  * @author zhouYan
  * @date 2020/3/13 13:46
  */
-public class R<T> implements Serializable{
+public class R<T> extends HashMap<String, Object>{
 
-    private Integer code;
-
-    private String message;
-
-    private T data;
-
-    private Boolean success;
-
-    private Long timestamp;
-
-    public Integer getCode() {
-        return code;
+    public R() {
+        put("timestamp", new Date().getTime());
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    private static R onSuccess(){
+        return new R().put("code", 200).put("ok", "true");
     }
 
-    public String getMessage() {
-        return message;
+    private static R onFail(){
+        return new R().put("code", 500).put("ok", "false");
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public static R ok() {
+        return onSuccess();
     }
 
-    public T getData() {
-        return data;
+    public static R okData(Object value) {
+        return onSuccess().put("data", value);
     }
 
-    public void setData(T data) {
-        this.data = data;
+    /**
+     * 封装业务数据
+     * @param key
+     * @param value
+     * @return
+     */
+    @Override
+    public R put(String key, Object value) {
+        super.put(key, value);
+        //将HashMap对象本身返回
+        return this;
     }
 
-    public Boolean getSuccess() {
-        return success;
+    public static R fail() {
+        return fail(ErrorCode.UNKNOWN.getCode(), ErrorCode.UNKNOWN.getMsg());
     }
 
-    public void setSuccess(Boolean success) {
-        this.success = success;
+    public static R fail(ErrorCode errorCode) {
+        return onFail().put("code", errorCode.getCode()).put("msg", errorCode.getMsg());
     }
 
-    public Long getTimestamp() {
-        return timestamp;
+    public static R fail(String msg) {
+        return onFail().put("code", ErrorCode.UNKNOWN.getCode()).put("msg", msg);
     }
 
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
+    public static R fail(Integer code, String msg){
+        return onFail().put("code", code).put("msg", msg);
     }
 
-    public static R success(){
-        R r = new R();
-        r.setCode(2000);
-        r.setSuccess(true);
-        r.setTimestamp(new Date().getTime());
-        return r;
+    public static R exception() {
+        return exception(ErrorCode.UNKNOWN);
     }
 
-    public static R success(Object data){
-        R r = new R();
-        r.setCode(2000);
-        r.setData(data);
-        r.setSuccess(true);
-        r.setTimestamp(new Date().getTime());
-        return r;
+    public static R exception(Exception e) {
+        return onFail().put("msg", e.getMessage());
     }
 
-    public static R fail(String message){
-        R r = new R();
-        r.setCode(4000);
-        r.setMessage(message);
-        r.setSuccess(false);
-        r.setTimestamp(new Date().getTime());
-        return r;
-    }
-
-    public static R fail(Integer code, String message){
-        R r = new R();
-        r.setCode(code);
-        r.setMessage(message);
-        r.setSuccess(false);
-        r.setTimestamp(new Date().getTime());
-        return r;
-    }
-
-    public static R fail(GlobalErrorCode status){
-        R r = new R();
-        r.setCode(status.getErrorCode());
-        r.setMessage(status.getError());
-        r.setSuccess(false);
-        r.setTimestamp(new Date().getTime());
-        return r;
+    public static R exception(ErrorCode errorCode) {
+        return onFail().put("code", errorCode.getCode()).put("msg", errorCode.getMsg());
     }
 }
