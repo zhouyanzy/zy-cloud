@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zhouy.shoppay.mapper.ShopPayRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.zhouy.shoppay.bean.entity.ShopPayRecord">
+        <id column="id" property="id" />
+        <result column="order_no" property="orderNo" />
+        <result column="pay_no" property="payNo" />
+        <result column="pay_type" property="payType" />
+        <result column="pay_fee" property="payFee" />
+        <result column="pay_result" property="payResult" />
+        <result column="archive" property="archive" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+</mapper>

@@ -17,9 +17,6 @@ import java.util.List;
  * <p>
  *  服务实现类
  * </p>
- *
- * @author zhouy
- * @since 2020-03-18
  */
 @Service
 public class BlogArticleCategoryServiceImpl extends ServiceImpl<BlogArticleCategoryMapper, BlogArticleCategory> implements BlogArticleCategoryService {

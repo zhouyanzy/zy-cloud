@@ -8,6 +8,7 @@ import top.zhouy.blogmanage.bean.entity.SysUser;
  * @date 2020/3/17 14:21
  */
 public class BaseController {
+
     protected SysUser getUser(){
         SysUser sysUser = new SysUser();
         sysUser.setUserId(1);
@@ -18,4 +19,5 @@ public class BaseController {
     protected Integer getUserId(){
         return getUser().getUserId();
     }
+
 }

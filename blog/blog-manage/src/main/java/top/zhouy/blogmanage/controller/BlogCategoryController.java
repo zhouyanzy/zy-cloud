@@ -4,6 +4,7 @@ package top.zhouy.blogmanage.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.zhouy.blogmanage.bean.entity.BlogCategory;
@@ -18,16 +19,13 @@ import javax.annotation.Resource;
 import java.util.*;
 
 /**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author zhouy
- * @since 2020-03-18
+ * 分类Controller
+ * @author zhouYan
+ * @date 2020/3/17 14:21
  */
 @RestController
 @RequestMapping("/blogCategory")
-@Api(description = "博客分类Controller")
+@Api(description = "分类Controller")
 public class BlogCategoryController {
 
     @Autowired
@@ -36,6 +34,10 @@ public class BlogCategoryController {
     @Autowired
     private DozerService dozerService;
 
+    /**
+     * 获取分类类型
+     * @return
+     */
     @GetMapping("/getCategoryType")
     @ApiOperation(value = "获取分类类型")
     public R getCategoryType(){
@@ -55,9 +57,18 @@ public class BlogCategoryController {
         return R.okData(data);
     }
 
+    /**
+     * 查询分类列表
+     * @param categoryName
+     * @param isListParent
+     * @param categoryType
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation(value = "查询列表")
-    public R list(String categoryName, boolean isListParent, CategoryType categoryType){
+    public R list(@ApiParam(value = "分类名称") @RequestParam(value = "categoryName", required = false)String categoryName,
+                  @ApiParam(value = "是否是查找对应的上级分类") @RequestParam(value = "isListParent", required = false)Boolean isListParent,
+                  @ApiParam(value = "分类类型") @RequestParam(value = "categoryType", required = false)CategoryType categoryType){
         QueryWrapper<BlogCategory> queryWrapper = new QueryWrapper<>();
         Optional.ofNullable(categoryName).ifPresent(t -> queryWrapper.like("category_name", t));
         if (isListParent) {
@@ -85,16 +96,20 @@ public class BlogCategoryController {
     }
 
     /**
-     * 信息
+     * 根据主键id查询
+     * @param id
+     * @return
      */
     @GetMapping("/detail/{id}")
     @ApiOperation(value = "根据主键id查询")
-    public R detail(@PathVariable("id") Long id){
+    public R detail(@ApiParam(value = "主键id") @PathVariable("id") Long id){
         return R.ok().put("blogCategory", blogCategoryService.getById(id));
     }
 
     /**
-     * 保存
+     * 保存分类
+     * @param blogCategory
+     * @return
      */
     @PostMapping("/save")
     @ApiOperation(value = "保存")
@@ -107,7 +122,7 @@ public class BlogCategoryController {
      */
     @DeleteMapping("/delete/{id}")
     @ApiOperation(value = "删除")
-    public R delete(@PathVariable Long id){
+    public R delete(@ApiParam(value = "主键id") @PathVariable Long id){
         return R.okData(blogCategoryService.removeById(id));
     }
 }

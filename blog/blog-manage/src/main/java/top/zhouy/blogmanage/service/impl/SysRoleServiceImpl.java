@@ -25,7 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * SysRoleServiceImpl
+ * <p>
+ *  服务实现类
+ * </p>
  */
 @Service
 public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {

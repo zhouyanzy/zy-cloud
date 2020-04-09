@@ -14,10 +14,23 @@ import java.util.List;
 @Service
 public interface SysRoleMenuService extends IService<SysRoleMenu> {
 
-
+    /**
+     * 保存
+     * @param roleId
+     * @param menuIdList
+     */
     void saveOrUpdate(Integer roleId, List<Integer> menuIdList);
 
+    /**
+     * 查找
+     * @param roleId
+     * @return
+     */
     List<Integer> queryMenuIdList(Integer roleId);
 
+    /**
+     * 删除
+     * @param roleIds
+     */
     void deleteBatchByRoleId(Integer[] roleIds);
 }

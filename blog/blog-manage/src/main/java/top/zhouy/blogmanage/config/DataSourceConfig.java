@@ -9,6 +9,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 /**
+ * 数据库配置
  * @author zhouYan
  * @date 2020/3/13 10:45
  */

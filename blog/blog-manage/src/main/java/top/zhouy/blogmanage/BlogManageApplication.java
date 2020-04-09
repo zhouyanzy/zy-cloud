@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @SpringBootApplication
 @EnableDiscoveryClient
 @ComponentScan(basePackages = {"top.zhouy"})
-@MapperScan("top.zhouy.blogmanage.mapper")  //配置mapper扫描
+@MapperScan("top.zhouy.blogmanage.mapper")
 public class BlogManageApplication {
 
 	public static void main(String[] args) {

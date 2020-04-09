@@ -15,11 +15,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * <p>
- * 菜单管理 前端控制器
- * </p>
+ * 菜单管理Controller
+ * @author zhouYan
+ * @date 2020/3/17 14:21
  */
-
 @RestController
 @RequestMapping("/admin/sys/menu")
 public class SysMenuController extends BaseController{

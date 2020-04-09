@@ -42,7 +42,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Lazy
     private SysRoleService sysRoleService;
 
-
     /**
      * 查询用户菜单
      *

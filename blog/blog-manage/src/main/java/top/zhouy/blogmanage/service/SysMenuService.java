@@ -9,6 +9,7 @@ import java.util.List;
  * SysMenuService
  */
 public interface SysMenuService extends IService<SysMenu> {
+
     /**
      * 获取用户的所有菜单
      * @param userId

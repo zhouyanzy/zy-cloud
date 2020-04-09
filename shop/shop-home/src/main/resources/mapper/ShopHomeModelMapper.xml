@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zhouy.shophome.mapper.ShopHomeModelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.zhouy.shophome.bean.entity.ShopHomeModel">
+        <id column="id" property="id" />
+        <result column="model_type" property="modelType" />
+        <result column="img_type" property="imgType" />
+        <result column="old_img" property="oldImg" />
+        <result column="img" property="img" />
+        <result column="url_type" property="urlType" />
+        <result column="url_key" property="urlKey" />
+        <result column="start_at" property="startAt" />
+        <result column="end_at" property="endAt" />
+        <result column="archive" property="archive" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+</mapper>

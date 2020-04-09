@@ -7,6 +7,7 @@ import lombok.Getter;
  */
 @Getter
 public enum MenuTypeEnum {
+
     /**
      * 目录
      */

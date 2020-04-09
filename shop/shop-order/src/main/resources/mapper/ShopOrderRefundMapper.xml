@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zhouy.shoporder.mapper.ShopOrderRefundMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.zhouy.shoporder.bean.entity.ShopOrderRefund">
+        <id column="id" property="id" />
+        <result column="order_id" property="orderId" />
+        <result column="order_item_id" property="orderItemId" />
+        <result column="refund_type" property="refundType" />
+        <result column="reason" property="reason" />
+        <result column="refund_fee" property="refundFee" />
+        <result column="refund_status" property="refundStatus" />
+        <result column="order_status" property="orderStatus" />
+        <result column="archive" property="archive" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+</mapper>

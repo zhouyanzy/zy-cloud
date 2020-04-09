@@ -14,10 +14,6 @@
 	<description>utils service for Spring Cloud</description>
 	<packaging>jar</packaging>
 
-	<properties>
-		<java.version>1.8</java.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -29,20 +25,12 @@
 			<artifactId>dozer</artifactId>
 			<version>5.4.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>top.zhouy</groupId>
 			<artifactId>common-response</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

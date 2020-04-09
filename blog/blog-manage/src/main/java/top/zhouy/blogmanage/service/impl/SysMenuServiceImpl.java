@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * SysMenuServiceImpl
+ * <p>
+ *  服务实现类
+ * </p>
  */
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
@@ -27,9 +29,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Autowired
     private SysRoleMenuService sysRoleMenuService;
+
     /**
      * 获取用户的所有菜单
-     *
      * @param userId
      * @return
      */
@@ -71,7 +73,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     /**
      * 根据父菜单，查询子菜单(用于鉴权)
-     *
      * @param parentId   父菜单ID
      * @param menuIdList 用户菜单ID
      */
@@ -93,7 +94,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     /**
      * 根据父菜单，查询子菜单
-     *
      * @param parentId 父菜单ID
      */
     @Override
@@ -111,7 +111,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     /**
      * 获取用户菜单列表
-     *
      * @param userId
      */
     @Override
@@ -128,7 +127,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     /**
      * 删除
-     *
      * @param menuId
      */
     @Override
@@ -138,7 +136,4 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         //删除菜单与角色关联
         sysRoleMenuService.removeByMap(new MapUtils().put("menu_id",menuId));
     }
-
-
-
 }

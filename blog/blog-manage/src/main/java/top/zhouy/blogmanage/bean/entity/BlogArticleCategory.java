@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ * 博客分类关系
  * </p>
  *
  * @author zhouy

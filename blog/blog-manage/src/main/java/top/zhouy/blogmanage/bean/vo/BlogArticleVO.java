@@ -8,6 +8,7 @@ import top.zhouy.blogmanage.bean.entity.BlogCategory;
 import java.util.List;
 
 /**
+ * 博客视图
  * @author zhouYan
  * @date 2020/3/25 13:13
  */
