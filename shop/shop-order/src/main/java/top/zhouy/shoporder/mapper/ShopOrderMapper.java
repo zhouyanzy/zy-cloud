@@ -1,5 +1,6 @@
 package top.zhouy.shoporder.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import top.zhouy.shoporder.bean.entity.ShopOrder;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -13,4 +14,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ShopOrderMapper extends BaseMapper<ShopOrder> {
 
+    /**
+     * 根据订单号查找订单
+     * @param orderNo
+     * @return
+     */
+    ShopOrder selectByOrderNo(@Param("orderNo") String orderNo);
 }

@@ -23,6 +23,9 @@ class MyExceptionHandler {
 	 */
 	@ExceptionHandler(BsException.class)
 	public R handleMyException(BsException e){
+		if (ErrorCode.LCN.equals(e.getErrorCode())) {
+			throw e;
+		}
 		return R.fail(e.getErrorCode().getCode(), e.getErrorCode().getMsg());
 	}
 

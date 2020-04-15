@@ -13,4 +13,24 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ShopPayRecordService extends IService<ShopPayRecord> {
 
+    /**
+     * 增加支付记录，TTC模式
+     * @param shopPayRecord
+     * @return
+     */
+    Boolean addPayRecordTCC(ShopPayRecord shopPayRecord);
+
+    /**
+     * 增加支付记录，TXC模式
+     * @param shopPayRecord
+     * @return
+     */
+    Boolean addPayRecordTXC(ShopPayRecord shopPayRecord);
+
+    /**
+     * 增加支付记录，LCN模式
+     * @param shopPayRecord
+     * @return
+     */
+    Boolean addPayRecordLCN(ShopPayRecord shopPayRecord);
 }

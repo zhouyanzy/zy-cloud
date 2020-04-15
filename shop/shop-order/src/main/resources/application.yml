@@ -2,7 +2,7 @@ server:
   port: 8930
 spring:
   application:
-     name: blog-manage
+     name: shop-order
   datasource:
      url: jdbc:mysql://47.101.151.43:3306/shop-order?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
      username: zy
@@ -46,7 +46,7 @@ spring:
     database: 1
     host: 47.101.151.143
     port: 6379
-    password:
+    password: zy1217
     lettuce:
       pool:
         max-active: 8
@@ -63,3 +63,7 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   typeAliasesPackage: top.zhouy.shoporder.bean.entity
   type-enums-package: top.zhouy.shoporder.bean.type
+
+tx-lcn:
+  client:
+    manager-address: zhouy.top:9020

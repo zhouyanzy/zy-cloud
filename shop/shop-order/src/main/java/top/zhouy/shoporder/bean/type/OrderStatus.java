@@ -5,4 +5,9 @@ package top.zhouy.shoporder.bean.type;
  * @date 2020/4/9 15:48
  */
 public enum OrderStatus {
+
+    SUCCESS,
+
+    PAID
+
 }

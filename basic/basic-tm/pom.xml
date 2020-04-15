@@ -4,34 +4,25 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>top.zhouy</groupId>
-		<artifactId>shop</artifactId>
+		<artifactId>basic</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>top.zhouy</groupId>
-	<artifactId>shop-order</artifactId>
+	<artifactId>basic-tm</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>shop-order</name>
+	<name>basic-tm</name>
 	<description>Demo project for Spring Boot</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.codingapi.txlcn</groupId>
-			<artifactId>txlcn-tc</artifactId>
+			<artifactId>txlcn-tm</artifactId>
 			<version>5.0.2.RELEASE</version>
 		</dependency>
-
 		<dependency>
-			<groupId>com.codingapi.txlcn</groupId>
-			<artifactId>txlcn-txmsg-netty</artifactId>
-			<version>5.0.2.RELEASE</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>com.codingapi</groupId>
-			<artifactId>transaction-springcloud</artifactId>
-			<version>5.0.2.RELEASE</version>
-		</dependency>
-
 	</dependencies>
 
 </project>

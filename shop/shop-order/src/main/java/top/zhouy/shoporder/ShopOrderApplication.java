@@ -1,5 +1,6 @@
 package top.zhouy.shoporder;
 
+import com.codingapi.txlcn.tc.config.EnableDistributedTransaction;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
+@EnableDistributedTransaction
 @ComponentScan(basePackages = {"top.zhouy"})
 @MapperScan("top.zhouy.shoporder.mapper")
 public class ShopOrderApplication {

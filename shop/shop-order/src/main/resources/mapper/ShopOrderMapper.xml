@@ -22,4 +22,8 @@
         <result column="updated_at" property="updatedAt" />
     </resultMap>
 
+    <select id="selectByOrderNo" resultMap="BaseResultMap">
+        SELECT id, total_fee, pay_no, pay_type FROM shop_order WHERE order_no = #{orderNo}
+    </select>
+
 </mapper>

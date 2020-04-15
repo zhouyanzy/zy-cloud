@@ -5,4 +5,7 @@ package top.zhouy.shoppay.bean.type;
  * @date 2020/4/9 15:53
  */
 public enum PayType {
+
+    ALIPAY
+
 }

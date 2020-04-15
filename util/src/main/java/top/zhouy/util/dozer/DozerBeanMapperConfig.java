@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * 转换对象配置
  * @author zhouYan
  * @date 2020/3/13 15:32
  */
