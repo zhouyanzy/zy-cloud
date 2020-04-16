@@ -18,6 +18,7 @@ import top.zhouy.shopproduct.bean.entity.ShopProduct;
 import top.zhouy.shopproduct.bean.entity.ShopSku;
 import top.zhouy.shopproduct.service.ShopProductService;
 import top.zhouy.shopproduct.service.ShopSkuService;
+import top.zhouy.util.utils.RedisUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -80,6 +81,7 @@ public class ShopSkuController {
     @Caching(evict={@CacheEvict(cacheNames = "shop::sku::list", key = "#shopSku.productId"),
                     @CacheEvict(key = "#shopSku.id", condition = "#shopSku.archive eq 1")})
     public R save(ShopSku shopSku){
+        RedisUtils.redisLock(String.valueOf(shopSku.getId()), 3L);
         return R.okData(shopSkuService.saveOrUpdate(shopSku));
     }
 }

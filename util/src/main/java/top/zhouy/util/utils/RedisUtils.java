@@ -23,10 +23,10 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtils {
 
     @Autowired
-    private static RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
-    private static Executor asyncExecutor;
+    private Executor asyncExecutor;
 
     private static RedisUtils redisUtils;
 
@@ -34,8 +34,8 @@ public class RedisUtils {
     public void initialize() {
         //@Component will call construct
         redisUtils = this;
-        RedisUtils.redisTemplate = this.redisTemplate;
-        RedisUtils.asyncExecutor = this.asyncExecutor;
+        redisUtils.redisTemplate = this.redisTemplate;
+        redisUtils.asyncExecutor = this.asyncExecutor;
     }
 
     /**
@@ -44,11 +44,11 @@ public class RedisUtils {
      * @param time 锁住时间，秒
      */
     public static void redisLock(String key, Long time){
-        if (redisTemplate.hasKey(key)) {
-            redisTemplate.expire(key, time, TimeUnit.SECONDS);
+        if (redisUtils.redisTemplate.hasKey(key)) {
+            redisUtils.redisTemplate.expire(key, time, TimeUnit.SECONDS);
             throw new BsException(ErrorCode.UNKNOWN, "请勿重复提交");
         }
-        if (! redisTemplate.opsForValue().setIfAbsent(key, 1, time, TimeUnit.SECONDS)){
+        if (! redisUtils.redisTemplate.opsForValue().setIfAbsent(key, 1, time, TimeUnit.SECONDS)){
             throw new BsException(ErrorCode.UNKNOWN, "请勿重复提交");
         }
     }
@@ -60,11 +60,11 @@ public class RedisUtils {
      */
     public static void delayQueue(String message, Long time){
         Long currentTime = LocalDateTime.now().getLong(ChronoField.SECOND_OF_DAY);
-        redisTemplate.opsForZSet().add("queue::delay::message", message, currentTime + time);
-        asyncExecutor.execute(() -> {
+        redisUtils.redisTemplate.opsForZSet().add("queue::delay::message", message, currentTime + time);
+        redisUtils.asyncExecutor.execute(() -> {
             while (!Thread.interrupted()){
                 // 只取一条
-                Set<Object> values = redisTemplate.opsForZSet().rangeByScore("queue::delay::message", 0, LocalDateTime.now().getLong(ChronoField.SECOND_OF_DAY), 0, 1);
+                Set<Object> values = redisUtils.redisTemplate.opsForZSet().rangeByScore("queue::delay::message", 0, LocalDateTime.now().getLong(ChronoField.SECOND_OF_DAY), 0, 1);
                 if (values.isEmpty()) {
                     try {
                         // 每5秒执行一次
@@ -76,7 +76,7 @@ public class RedisUtils {
                 }
                 String targeMessage = String.valueOf(values.iterator().next());
                 // 利用redis单线程处理重复消费问题
-                if (redisTemplate.opsForZSet().remove("queue::delay::message", targeMessage) > 0) {
+                if (redisUtils.redisTemplate.opsForZSet().remove("queue::delay::message", targeMessage) > 0) {
                     System.out.println(targeMessage);
                 }
             }
