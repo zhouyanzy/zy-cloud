@@ -42,17 +42,6 @@ spring:
            reset-enable: true
            login-username: admin
            login-password: admin
-  redis:
-    database: 1
-    host: 47.101.151.143
-    port: 6379
-    password: zy1217
-    lettuce:
-      pool:
-        max-active: 8
-        max-wait: -1ms
-        max-idle: 8
-        min-idle: 0
 
 eureka:
   client:

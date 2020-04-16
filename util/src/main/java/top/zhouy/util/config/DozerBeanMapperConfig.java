@@ -1,4 +1,4 @@
-package top.zhouy.util.dozer;
+package top.zhouy.util.config;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.context.annotation.Bean;

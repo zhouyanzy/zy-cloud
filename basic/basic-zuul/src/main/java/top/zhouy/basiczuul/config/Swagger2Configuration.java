@@ -38,6 +38,7 @@ public class Swagger2Configuration {
             resources.add(swaggerResource("博客后台","/api-blog-manage/v2/api-docs","2.0"));
             resources.add(swaggerResource("订单中心","/shop-order/v2/api-docs","2.0"));
             resources.add(swaggerResource("支付中心","/shop-pay/v2/api-docs","2.0"));
+            resources.add(swaggerResource("商品中心","/shop-product/v2/api-docs","2.0"));
             return resources;
         }
 

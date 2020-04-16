@@ -1,33 +1,50 @@
 package top.zhouy.shopproduct.controller;
 
 
+import cn.hutool.system.UserInfo;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.MatchPhraseQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
+import top.zhouy.commonresponse.bean.enums.ErrorCode;
 import top.zhouy.commonresponse.bean.model.R;
+import top.zhouy.commonresponse.exception.BsException;
 import top.zhouy.shopproduct.bean.entity.ShopProduct;
 import top.zhouy.shopproduct.service.ShopProductService;
+import top.zhouy.util.utils.ElasticSearchUtils;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * <p>
- * 商品 前端控制器
- * </p>
+ * 商品Controller
  *
  * @author zhouYan
  * @since 2020-04-09
  */
 @RestController
 @RequestMapping("/product")
+@Api(description = "商品Controller")
 public class ShopProductController {
 
     @Autowired
@@ -62,7 +79,88 @@ public class ShopProductController {
     @PostMapping("/save")
     @ApiOperation(value = "保存")
     public R save(ShopProduct shopProduct){
-        return R.okData(shopProductService.saveOrUpdate(shopProduct));
+        Boolean success = shopProductService.saveOrUpdate(shopProduct);
+        if (success) {
+            ElasticSearchUtils.saveDocument("product", String.valueOf(shopProduct.getId()), shopProduct, shopProduct.getArchive());
+        }
+        return R.okData(success);
+    }
+
+    /**
+     * 查找商品，从elasticSearch
+     * @param productName
+     * @return
+     */
+    @GetMapping("/searchByES")
+    @ApiOperation(value = "查找商品，从elasticSearch")
+    public R searchByES(String productName){
+        // 构建查询条件
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        MatchPhraseQueryBuilder matchPhraseQueryBuilder = QueryBuilders
+                .matchPhraseQuery("productName", productName);
+        searchSourceBuilder.query(matchPhraseQueryBuilder);
+        // 创建查询请求对象，将查询对象配置到其中
+        SearchRequest searchRequest = new SearchRequest("product");
+        searchRequest.source(searchSourceBuilder);
+        return R.okData(ElasticSearchUtils.query(searchRequest));
+    }
+
+    /**
+     * 创建商品索引
+     * @param shopProduct
+     * @return
+     */
+    @PostMapping("/createIndex")
+    @ApiOperation(value = "创建商品索引")
+    public R createIndex(){
+        // 创建 Mapping
+        XContentBuilder mapping = null;
+        try {
+            mapping = XContentFactory.jsonBuilder()
+                    .startObject()
+                    .field("dynamic", true)
+                    .startObject("properties")
+                    .startObject("productName")
+                    .field("type","text")
+                    .endObject()
+                    .startObject("detail")
+                    .field("type","text")
+                    .startObject("fields")
+                    .startObject("keyword")
+                    .field("type","keyword")
+                    .endObject()
+                    .endObject()
+                    .endObject()
+                    .startObject("productImg")
+                    .field("type","text")
+                    .endObject()
+                    .startObject("stock")
+                    .field("type","integer")
+                    .endObject()
+                    .startObject("price")
+                    .field("type","float")
+                    .endObject()
+                    .startObject("sales")
+                    .field("type","integer")
+                    .endObject()
+                    .startObject("createdAt")
+                    .field("type","date")
+                    .endObject()
+                    .endObject()
+                    .endObject();
+        } catch (IOException e) {
+            throw new BsException(ErrorCode.UNKNOWN, "创建商品索引失败");
+        }
+        // 创建索引配置信息，配置
+        Settings settings = Settings.builder()
+                .put("index.number_of_shards", 1)
+                .put("index.number_of_replicas", 0)
+                .build();
+        // 新建创建索引请求对象，然后设置索引类型（ES 7.0 将不存在索引类型）和 mapping 与 index 配置
+        CreateIndexRequest request = new CreateIndexRequest("product", settings);
+        request.mapping("doc", mapping);
+        ElasticSearchUtils.deleteIndex("product");
+        return R.okData(ElasticSearchUtils.createIndex(request));
     }
 }
 

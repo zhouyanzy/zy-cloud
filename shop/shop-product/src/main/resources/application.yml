@@ -2,7 +2,7 @@ server:
   port: 8910
 spring:
   application:
-     name: blog-manage
+     name: shop-product
   datasource:
      url: jdbc:mysql://47.101.151.43:3306/shop-product?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
      username: zy
@@ -42,17 +42,6 @@ spring:
            reset-enable: true
            login-username: admin
            login-password: admin
-  redis:
-    database: 1
-    host: 47.101.151.143
-    port: 6379
-    password:
-    lettuce:
-      pool:
-        max-active: 8
-        max-wait: -1ms
-        max-idle: 8
-        min-idle: 0
 
 eureka:
   client:

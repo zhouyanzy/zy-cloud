@@ -1,0 +1,33 @@
+spring:
+  redis:
+    database: 1
+    host: 47.101.151.43
+    port: 6379
+    password: zy1217
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+
+#elasticsearch
+elasticsearch:
+  schema: http
+  address: 47.101.151.43:9200
+  connectTimeout: 5000
+  socketTimeout: 5000
+  connectionRequestTimeout: 5000
+  maxConnectNum: 100
+  maxConnectPerRoute: 100
+
+#线程池配置
+async:
+  # 配置核心线程数
+  corePoolSize: 10
+  # 配置最大线程数
+  maxPoolSize: 15
+  # 配置队列大小
+  queueCapacity: 9999
+  # 配置线程池中的线程的名称前缀
+  namePrefix: zy-thread-

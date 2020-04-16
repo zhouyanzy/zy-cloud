@@ -8,6 +8,10 @@ import com.netflix.discovery.converters.Auto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
@@ -30,6 +34,11 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/category")
+/**
+ * 指定默认缓存区
+ * 缓存区：key的前缀，与指定的key构成redis的key，如 shop::category::10001
+ */
+@CacheConfig(cacheNames = "shop::category")
 public class ShopCategoryController {
 
     @Autowired
@@ -43,6 +52,19 @@ public class ShopCategoryController {
      */
     @GetMapping("/list")
     @ApiOperation(value = "查询列表")
+    /**
+     * @Cacheable 缓存有数据时，从缓存获取；没有数据时，执行方法，并将返回值保存到缓存中
+     * @Cacheable 一般在查询中使用
+     * 1) cacheNames 指定缓存区，没有配置使用@CacheConfig指定的缓存区
+     * 2) key 指定缓存区的key
+     * 3) 注解的值使用SpEL表达式
+     * eq ==
+     * lt <
+     * le <=
+     * gt >
+     * ge >=
+     */
+    @Cacheable(cacheNames = "shop::category::list", key = "#categoryName + '_' + #page.current + '_' + #page.size")
     public R list(@ApiParam(value = "分类名称") @RequestParam(value = "categoryName", required = false) String categoryName,
                   @ApiParam(value = "分页，当前页数'current'，每页条数'size'") Page page){
         QueryWrapper<ShopCategory> queryWrapper = new QueryWrapper<>();
@@ -63,6 +85,11 @@ public class ShopCategoryController {
      */
     @PostMapping("/save")
     @ApiOperation(value = "保存")
+    /**
+     * allEntries = true ：删除整个缓存区的所有值，此时指定的key无效
+     * beforeInvocation = true ：默认false，表示调用方法之后删除缓存数据；true时，在调用之前删除缓存数据(如方法出现异常)
+     */
+    @CacheEvict(allEntries = true)
     public R save(ShopCategory shopCategory){
         return R.okData(shopCategoryService.saveOrUpdate(shopCategory));
     }

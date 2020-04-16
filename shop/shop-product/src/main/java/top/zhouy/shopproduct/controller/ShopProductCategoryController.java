@@ -28,7 +28,7 @@ import java.util.Optional;
  * @since 2020-04-09
  */
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/productCategory")
 public class ShopProductCategoryController {
 
     @Autowired
