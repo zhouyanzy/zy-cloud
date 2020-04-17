@@ -1,6 +1,10 @@
 package top.zhouy.shopproduct.controller;
 
 
+import cn.hutool.Hutool;
+import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
+import com.alibaba.druid.util.H2Utils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,12 +12,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.ibatis.cache.CacheKey;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 import top.zhouy.commonresponse.bean.model.R;
+import top.zhouy.commonresponse.bean.vo.QueueProductStockVO;
 import top.zhouy.shopproduct.bean.entity.ShopProduct;
 import top.zhouy.shopproduct.bean.entity.ShopSku;
 import top.zhouy.shopproduct.service.ShopProductService;
@@ -24,6 +31,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static top.zhouy.commonresponse.bean.constant.SysConstants.QUEUE_PRODUCT_STOCK;
 
 /**
  * 商品规格Controller
@@ -43,6 +52,9 @@ public class ShopSkuController {
 
     @Autowired
     private ShopSkuService shopSkuService;
+
+    @Autowired
+    private AmqpTemplate rabbitTemplate;
 
     /**
      * 查找商品sku
@@ -76,13 +88,22 @@ public class ShopSkuController {
      * @return
      */
     @PostMapping("/save")
-    @ApiOperation(value = "保存")
+    @ApiOperation(value = "保存，保存时库存字段为需要增加的库存")
     @CachePut(key = "#shopSku.id", condition = "#shopSku.archive eq 0")
     @Caching(evict={@CacheEvict(cacheNames = "shop::sku::list", key = "#shopSku.productId"),
                     @CacheEvict(key = "#shopSku.id", condition = "#shopSku.archive eq 1")})
     public R save(ShopSku shopSku){
         RedisUtils.redisLock(String.valueOf(shopSku.getId()), 3L);
-        return R.okData(shopSkuService.saveOrUpdate(shopSku));
+        Long amount = shopSku.getStock();
+        shopSku.setSales(null);
+        shopSku.setStock(null);
+        Boolean success = shopSkuService.saveOrUpdate(shopSku);
+        if (success) {
+            if (amount != null && amount > 0) {
+                rabbitTemplate.convertAndSend(QUEUE_PRODUCT_STOCK, "", new QueueProductStockVO(shopSku.getProductId(), shopSku.getId(), amount));
+            }
+        }
+        return R.okData(success);
     }
 }
 

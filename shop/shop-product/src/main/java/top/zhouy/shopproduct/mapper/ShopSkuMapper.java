@@ -1,5 +1,6 @@
 package top.zhouy.shopproduct.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import top.zhouy.shopproduct.bean.entity.ShopSku;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -13,4 +14,19 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ShopSkuMapper extends BaseMapper<ShopSku> {
 
+    /**
+     * 增加库存
+     * @param skuId 规格Id
+     * @param amount 库存
+     * @return
+     */
+    int addStock(@Param("skuId") Long skuId, @Param("amount") Long amount);
+
+    /**
+     * 增加销量
+     * @param skuId 规格Id
+     * @param amount 销量
+     * @return
+     */
+    int addSales(@Param("skuId") Long skuId, @Param("amount") Long amount);
 }

@@ -9,9 +9,19 @@ package top.zhouy.commonresponse.bean.constant;
  * @description 系统常量
  */
 public class SysConstants {
+
     /**
      * 超级管理员账号Id
      */
-    public static Integer SUPER_ADMIN=1;
+    public static final Integer SUPER_ADMIN = 1;
 
+    /**
+     * 商品库存队列
+     */
+    public static final String QUEUE_PRODUCT_STOCK = "QUEUE_PRODUCT_STOCK";
+
+    /**
+     * 商品销售队列
+     */
+    public static final String QUEUE_PRODUCT_SALES = "QUEUE_PRODUCT_SALES";
 }

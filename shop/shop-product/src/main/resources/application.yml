@@ -52,3 +52,7 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   typeAliasesPackage: top.zhouy.shopproduct.bean.entity
   type-enums-package: top.zhouy.shopproduct.bean.type
+  global-config:
+    db-config:
+      id-type: auto
+      field-strategy: not_empty

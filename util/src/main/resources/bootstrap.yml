@@ -31,3 +31,10 @@ async:
   queueCapacity: 9999
   # 配置线程池中的线程的名称前缀
   namePrefix: zy-thread-
+
+rabbitmq:
+  addresses: 47.101.151.43
+  port: 5672
+  username: root
+  password: 123456
+  virtual: my_vhost

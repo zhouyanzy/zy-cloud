@@ -15,4 +15,11 @@
         <result column="updated_at" property="updatedAt" />
     </resultMap>
 
+    <update id="addStock" >
+        UPDATE shop_product SET stock = stock + #{amount} WHERE id = #{productId}
+    </update>
+
+    <update id="addSales" >
+        UPDATE shop_product SET sales = sales + #{amount} WHERE id = #{productId}
+    </update>
 </mapper>
