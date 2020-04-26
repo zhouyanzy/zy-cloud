@@ -4,11 +4,14 @@ import com.codingapi.txlcn.tc.annotation.DTXPropagation;
 import com.codingapi.txlcn.tc.annotation.LcnTransaction;
 import com.codingapi.txlcn.tc.annotation.TccTransaction;
 import com.codingapi.txlcn.tc.annotation.TxcTransaction;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import top.zhouy.commonresponse.bean.enums.ErrorCode;
+import top.zhouy.commonresponse.bean.model.R;
 import top.zhouy.commonresponse.exception.BsException;
 import top.zhouy.shoporder.bean.entity.ShopOrder;
 import top.zhouy.shoporder.bean.type.OrderStatus;
@@ -118,5 +121,28 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
             shopOrder.setPaidFee(shopOrder.getTotalFee());
             return shopOrderMapper.insert(shopOrder) > 0;
         }
+    }
+
+    @HystrixCommand(
+            commandKey = "createOrder",
+            commandProperties = {
+                    @HystrixProperty(name = "execution.isolation.strategy", value = "THREAD")
+            },
+            threadPoolKey = "createOrderThreadPool",
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "3"),
+                    @HystrixProperty(name = "maxQueueSize", value = "5"),
+                    @HystrixProperty(name = "queueSizeRejectionThreshold", value = "7")
+            },
+            fallbackMethod = "createOrderFallback"
+    )
+    @Override
+    public Boolean createOrder(ShopOrder shopOrder) {
+        return shopOrderMapper.insert(shopOrder) > 0;
+    }
+
+    public Boolean createOrderFallback(ShopOrder shopOrder){
+        log.error("订单生成，熔断处理");
+        return false;
     }
 }

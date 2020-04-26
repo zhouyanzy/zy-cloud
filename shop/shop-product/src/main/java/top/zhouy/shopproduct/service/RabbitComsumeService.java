@@ -3,20 +3,29 @@ package top.zhouy.shopproduct.service;
 import cn.hutool.Hutool;
 import com.alibaba.druid.util.H2Utils;
 import com.netflix.discovery.converters.Auto;
+import com.rabbitmq.client.AMQP;
+import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import top.zhouy.commonresponse.bean.enums.ErrorCode;
 import top.zhouy.commonresponse.bean.vo.QueueProductSalesVO;
 import top.zhouy.commonresponse.bean.vo.QueueProductStockVO;
+import top.zhouy.commonresponse.exception.BsException;
 import top.zhouy.shopproduct.bean.entity.ShopProduct;
 import top.zhouy.shopproduct.bean.entity.ShopSku;
 import top.zhouy.shopproduct.mapper.ShopProductMapper;
 import top.zhouy.shopproduct.mapper.ShopSkuMapper;
+
+import java.io.IOException;
 
 import static top.zhouy.commonresponse.bean.constant.SysConstants.QUEUE_PRODUCT_SALES;
 import static top.zhouy.commonresponse.bean.constant.SysConstants.QUEUE_PRODUCT_STOCK;
@@ -36,14 +45,26 @@ public class RabbitComsumeService {
     private ShopSkuMapper shopSkuMapper;
 
     @RabbitListener(queues = QUEUE_PRODUCT_STOCK)
-    public void processStock(QueueProductStockVO queueProductStockVO) {
-        shopSkuMapper.addStock(queueProductStockVO.getSkuId(), queueProductStockVO.getAmount());
-        shopProductMapper.addStock(queueProductStockVO.getProductId(), queueProductStockVO.getAmount());
+    @Transactional(rollbackFor = Exception.class)
+    public void processStock(QueueProductStockVO queueProductStockVO, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) {
+        try {
+            shopSkuMapper.addStock(queueProductStockVO.getSkuId(), queueProductStockVO.getAmount());
+            shopProductMapper.addStock(queueProductStockVO.getProductId(), queueProductStockVO.getAmount());
+            channel.basicAck(deliveryTag, true);
+        } catch (Exception e) {
+            throw new BsException(ErrorCode.UNKNOWN, "商品库存消息消费失败");
+        }
     }
 
     @RabbitListener(queues = QUEUE_PRODUCT_SALES)
-    public void processSales(QueueProductSalesVO queueProductSalesVO) {
-        shopSkuMapper.addSales(queueProductSalesVO.getSkuId(), queueProductSalesVO.getAmount());
-        shopProductMapper.addSales(queueProductSalesVO.getProductId(), queueProductSalesVO.getAmount());
+    @Transactional(rollbackFor = Exception.class)
+    public void processSales(QueueProductSalesVO queueProductSalesVO, @Header(AmqpHeaders.DELIVERY_TAG) long deliveryTag, Channel channel) {
+        try {
+            shopSkuMapper.addSales(queueProductSalesVO.getSkuId(), queueProductSalesVO.getAmount());
+            shopProductMapper.addSales(queueProductSalesVO.getProductId(), queueProductSalesVO.getAmount());
+            channel.basicAck(deliveryTag, true);
+        } catch (Exception e) {
+            throw new BsException(ErrorCode.UNKNOWN, "商品规格库存消息消费失败");
+        }
     }
 }

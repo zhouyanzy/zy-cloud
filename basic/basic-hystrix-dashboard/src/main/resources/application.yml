@@ -1,0 +1,21 @@
+server:
+  port: 8800
+spring:
+  application:
+    name: basic-hystrix-dashboard
+  redis:
+    database: 1
+    host: 47.101.151.143
+    port: 6379
+    password:
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://zhouy.top:8760/eureka/

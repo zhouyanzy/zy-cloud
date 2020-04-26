@@ -1,6 +1,8 @@
 package top.zhouy.shoppay.controller;
 
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -39,6 +41,14 @@ public class ShopPayRecordController {
      */
     @ApiOperation("支付完成，修改订单信息")
     @PostMapping("/onPay")
+    @HystrixCommand(
+            commandKey="onPay",
+            commandProperties= {
+                    @HystrixProperty(name="execution.isolation.strategy", value="SEMAPHORE"),
+                    @HystrixProperty(name="execution.isolation.semaphore.maxConcurrentRequests", value="6")
+            },
+            fallbackMethod = "onPayFallback"
+    )
     public R onPay(@ApiParam("订单号") @RequestParam(value = "orderNo") String orderNo,
                    @ApiParam("支付单号") @RequestParam(value = "payNo") String payNo,
                    @ApiParam("支付方式") @RequestParam(value = "payType") PayType payType,
@@ -59,6 +69,13 @@ public class ShopPayRecordController {
                 success = shopPayRecordService.addPayRecordLCN(shopPayRecord);
         }
         return R.okData(success);
+    }
+
+    public R onPayFallback(@ApiParam("订单号") @RequestParam(value = "orderNo") String orderNo,
+                   @ApiParam("支付单号") @RequestParam(value = "payNo") String payNo,
+                   @ApiParam("支付方式") @RequestParam(value = "payType") PayType payType,
+                   @ApiParam("分布式事务方式，'TCC'，'LCN'，'TXC'") @RequestParam(value = "lcnType") String lcnType) {
+        return R.fail("支付接口熔断处理--请稍候重试！");
     }
 
 }

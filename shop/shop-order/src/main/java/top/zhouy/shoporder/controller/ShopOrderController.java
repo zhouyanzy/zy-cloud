@@ -1,6 +1,8 @@
 package top.zhouy.shoporder.controller;
 
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,6 +30,12 @@ public class ShopOrderController {
 
     @Autowired
     private ShopOrderService shopOrderService;
+
+    @ApiOperation("生成订单")
+    @PostMapping("/createOrder")
+    public R createOrder(ShopOrder shopOrder){
+        return R.okData(shopOrderService.createOrder(shopOrder));
+    }
 
     /**
      * 支付完成

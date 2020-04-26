@@ -4,28 +4,26 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>top.zhouy</groupId>
-		<artifactId>shop</artifactId>
+		<artifactId>basic</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>top.zhouy</groupId>
-	<artifactId>shop-pay</artifactId>
+	<artifactId>basic-hystrix-dashboard</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>shop-pay</name>
+	<name>basic-hystrix-dashboard</name>
 	<description>Demo project for Spring Boot</description>
 
 	<dependencies>
+		<!-- Hystrix Dashboard 依赖 -->
 		<dependency>
-			<groupId>com.codingapi.txlcn</groupId>
-			<artifactId>txlcn-tc</artifactId>
-			<version>5.0.2.RELEASE</version>
+			<groupId>com.netflix.hystrix</groupId>
+			<artifactId>hystrix-javanica</artifactId>
+			<version>RELEASE</version>
 		</dependency>
-
 		<dependency>
-			<groupId>com.codingapi.txlcn</groupId>
-			<artifactId>txlcn-txmsg-netty</artifactId>
-			<version>5.0.2.RELEASE</version>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
 		</dependency>
-
 	</dependencies>
 
 </project>

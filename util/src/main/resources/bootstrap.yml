@@ -1,3 +1,13 @@
+management:
+  endpoint:
+    hystrix:
+      stream:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+
 spring:
   redis:
     database: 1
@@ -10,6 +20,24 @@ spring:
         max-wait: -1ms
         max-idle: 8
         min-idle: 0
+
+  rabbitmq:
+    addresses: 47.101.151.43
+    port: 5672
+    username: root
+    password: 123456
+    virtual-host: my_vhost
+    publisher-confirms: true
+    publisher-returns: false
+    listener:
+      direct:
+        acknowledge-mode: manual
+        retry:
+          max-attempts: 5
+      simple:
+        acknowledge-mode: manual
+        retry:
+          max-attempts: 5
 
 #elasticsearch
 elasticsearch:
@@ -31,10 +59,3 @@ async:
   queueCapacity: 9999
   # 配置线程池中的线程的名称前缀
   namePrefix: zy-thread-
-
-rabbitmq:
-  addresses: 47.101.151.43
-  port: 5672
-  username: root
-  password: 123456
-  virtual: my_vhost

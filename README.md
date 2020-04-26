@@ -9,6 +9,7 @@
 │  │  │─basic-config------------------------------配置中心config
 │  │  │─basic-eureka------------------------------注册中心eureka
 │  │  │─basic-zuul--------------------------------网关zuul
+│  │  │─basic-hystrix-dashboard-------------------hystrix监控
 │  │  └─basic-tm----------------------------------Tx-Manager
 │  ├─blog---------------------------------------博客业务模块
 │  │  │─blog-manager------------------------------博客后台管理
@@ -27,6 +28,7 @@
  - `8770` basic-zuul
  - `8780` basic-config
  - `8790` basic-auth
+ - `8800` basic-hystrix-dashboard
  - `8810` blog-manage
  - `8820` blog-home
  - `8910` shop-product
@@ -39,6 +41,7 @@
 
 ## 项目地址
  - 注册中心：http://zhouy.top:8760
+ - hystrix监控：http://zhouy.top:8800/hystrix
  - swagger文档：http://zhouy.top:8770/swagger-ui.html
  - lcn后台管理：http://zhouy.top:9010/admin/index.html#/login，密码：codingapi
 

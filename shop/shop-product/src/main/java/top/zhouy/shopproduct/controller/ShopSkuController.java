@@ -8,12 +8,16 @@ import com.alibaba.druid.util.H2Utils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.ibatis.cache.CacheKey;
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.MessagePostProcessor;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +58,7 @@ public class ShopSkuController {
     private ShopSkuService shopSkuService;
 
     @Autowired
-    private AmqpTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 查找商品sku
@@ -76,10 +80,20 @@ public class ShopSkuController {
      * ge >=
      */
     @Cacheable(cacheNames = "shop::sku::list", key = "#productId")
+    @HystrixCommand(
+            commandKey = "list",
+            commandProperties = {
+                    @HystrixProperty(name="execution.timeout.enabled", value="true"),
+                    @HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="3000")},
+            fallbackMethod = "listFallback")
     public R list(@ApiParam(value = "商品id") @RequestParam(value = "productId", required = true) String productId){
         QueryWrapper<ShopSku> queryWrapper = new QueryWrapper<>();
         Optional.ofNullable(productId).ifPresent(id -> queryWrapper.eq("product_id", id));
         return R.okData(shopSkuService.list(queryWrapper));
+    }
+
+    public R listFallback(@ApiParam(value = "商品id") @RequestParam(value = "productId", required = true) String productId){
+        return R.fail("查询数据，请求超时，熔断处理");
     }
 
     /**
@@ -100,10 +114,10 @@ public class ShopSkuController {
         Boolean success = shopSkuService.saveOrUpdate(shopSku);
         if (success) {
             if (amount != null && amount > 0) {
-                rabbitTemplate.convertAndSend(QUEUE_PRODUCT_STOCK, "", new QueueProductStockVO(shopSku.getProductId(), shopSku.getId(), amount));
+                CorrelationData correlationData = new CorrelationData(shopSku.getId().toString());
+                rabbitTemplate.convertAndSend(QUEUE_PRODUCT_STOCK, new QueueProductStockVO(shopSku.getProductId(), shopSku.getId(), amount), correlationData);
             }
         }
         return R.okData(success);
     }
 }
-

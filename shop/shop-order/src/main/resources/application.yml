@@ -48,6 +48,7 @@ eureka:
     serviceUrl:
       defaultZone: http://zhouy.top:8760/eureka/
 
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   typeAliasesPackage: top.zhouy.shoporder.bean.entity

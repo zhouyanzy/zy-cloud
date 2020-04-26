@@ -40,4 +40,11 @@ public interface ShopOrderService extends IService<ShopOrder> {
      * @return
      */
     Boolean onPayLCN(String orderNo, String payNo, PayType payType);
+
+    /**
+     * 生成订单
+     * @param shopOrder
+     * @return
+     */
+    Boolean createOrder(ShopOrder shopOrder);
 }

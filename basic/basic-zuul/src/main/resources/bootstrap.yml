@@ -7,3 +7,18 @@ spring:
       fail-fast: true
   profiles:
     active: dev
+
+zuul:
+  host:
+    connect-timeout-millis: 5000
+    socket-timeout-millis: 2000
+
+management:
+  endpoint:
+    hystrix:
+      stream:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
