@@ -5,9 +5,9 @@ spring:
     name: basic-auth
   redis:
     database: 1
-    host: 47.101.151.143
+    host: 47.101.151.43
     port: 6379
-    password:
+    password: zy1217
     lettuce:
       pool:
         max-active: 8
@@ -20,3 +20,18 @@ eureka:
     serviceUrl:
       defaultZone: http://zhouy.top:8760/eureka/
 
+security:
+  basic:
+    enabled: true
+
+management:
+  endpoint:
+    hystrix:
+      stream:
+        enabled: true
+    health:
+      show-details: ALWAYS
+  endpoints:
+    web:
+      exposure:
+        include: '*'

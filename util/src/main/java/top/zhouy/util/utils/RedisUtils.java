@@ -54,6 +54,15 @@ public class RedisUtils {
     }
 
     /**
+     * redis分布式id
+     * @param key 锁对象
+     * @param time 锁住时间，秒
+     */
+    public static Long getId(String key){
+        return redisUtils.redisTemplate.opsForValue().increment(key);
+    }
+
+    /**
      * redis延迟队列
      * @param message 消息
      * @param time 延迟时间，单位秒

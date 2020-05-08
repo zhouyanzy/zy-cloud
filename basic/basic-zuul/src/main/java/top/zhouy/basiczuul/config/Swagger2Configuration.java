@@ -1,22 +1,23 @@
 package top.zhouy.basiczuul.config;
 
+import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.OAuthBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.SwaggerResource;
-import springfox.documentation.swagger.web.SwaggerResourcesProvider;
-import springfox.documentation.swagger.web.UiConfiguration;
+import springfox.documentation.swagger.web.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class Swagger2Configuration {
         @Override
         public List<SwaggerResource> get() {
             List resources = new ArrayList();
-            resources.add(swaggerResource("授权中心","/api-auth/v2/api-docs","2.0"));
+            resources.add(swaggerResource("授权中心","/basic-auth/v2/api-docs","2.0"));
             resources.add(swaggerResource("博客后台","/api-blog-manage/v2/api-docs","2.0"));
             resources.add(swaggerResource("订单中心","/shop-order/v2/api-docs","2.0"));
             resources.add(swaggerResource("支付中心","/shop-pay/v2/api-docs","2.0"));

@@ -12,13 +12,28 @@ zuul:
   host:
     connect-timeout-millis: 5000
     socket-timeout-millis: 2000
+  sensitive-headers: Cookie, Set-Cookie, Authorization
 
 management:
   endpoint:
     hystrix:
       stream:
         enabled: true
+    health:
+      show-details: ALWAYS
   endpoints:
     web:
       exposure:
-        include: hystrix.stream
+        include: "*"
+
+security:
+  oauth2:
+    client:
+      access-token-uri: http://zhouy.top:8790/oauth/token
+      user-authorization-uri: http://zhouy.top:8790/oauth/authorize
+      client-id: zuul
+      client-secret: zuul
+    resource:
+      jwt:
+        key-uri: http://zhouy.top:8790/oauth/token_key
+        key-value: key_zy

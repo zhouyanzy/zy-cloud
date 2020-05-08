@@ -17,12 +17,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
                 .and()
                 .authorizeRequests()
-                .antMatchers(
+                .anyRequest().permitAll()
+                /*.antMatchers(
                         "/**",
                         "/swagger-ui.html",
                         "/swagger-resources/**",
@@ -30,8 +31,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         "/init/**",
                         "/webjars/**",
                         "/actuator/**",
-                        "/hystrix.stream").permitAll()
-                .anyRequest().authenticated()
+                        "/hystrix.stream").permitAll()*/
                 .and()
                 .httpBasic();
     }

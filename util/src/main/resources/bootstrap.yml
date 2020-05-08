@@ -3,10 +3,12 @@ management:
     hystrix:
       stream:
         enabled: true
+    health:
+      show-details: ALWAYS
   endpoints:
     web:
       exposure:
-        include: hystrix.stream
+        include: '*'
 
 spring:
   redis:

@@ -26,11 +26,7 @@ public class UserController {
     public Object getCurrentUser(Authentication authentication, HttpServletRequest request) {
         String header = request.getHeader("Authorization");
         String token = StrUtil.subAfter(header, "bearer ", false);
-        return Jwts.parser()
-                .setSigningKey("test_key".getBytes(StandardCharsets.UTF_8))
-                .parseClaimsJws(token)
-                .getBody();
+        return Jwts.parser().setSigningKey("test_key".getBytes(StandardCharsets.UTF_8)).parseClaimsJws(token).getBody();
     }
-
 
 }

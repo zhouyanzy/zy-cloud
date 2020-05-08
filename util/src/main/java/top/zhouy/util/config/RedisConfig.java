@@ -23,6 +23,7 @@ import java.time.Duration;
  * @date 2020/04/6 17:57
  */
 @Configuration
+@AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedisConfig {
 
     @Bean

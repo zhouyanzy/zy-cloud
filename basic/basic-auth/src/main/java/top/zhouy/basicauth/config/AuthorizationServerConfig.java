@@ -34,11 +34,12 @@ import java.util.List;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-    @Autowired
-    public PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserDetailsService userService;
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserDetailsService userService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -55,14 +56,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     /*@Autowired
     private TokenStore redisTokenStore;*/
 
-    /**
-     * 使用密码模式需要配置
-     */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
         List<TokenEnhancer> delegates = new ArrayList<>();
-        delegates.add(jwtTokenEnhancer); //配置JWT的内容增强器
+        //配置JWT的内容增强器
+        delegates.add(jwtTokenEnhancer);
         delegates.add(jwtAccessTokenConverter);
         enhancerChain.setTokenEnhancers(delegates);
         endpoints.authenticationManager(authenticationManager)
@@ -75,15 +74,21 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("blog")
-                .secret(passwordEncoder.encode("blog"))
-                .authorizedGrantTypes("refresh_token", "authorization_code", "password")
+                .withClient("zuul")
+                .secret(passwordEncoder.encode("zuul"))
+                .authorizedGrantTypes("refresh_token", "authorization_code", "password", "access_token", "check_token")
                 .accessTokenValiditySeconds(3600)
                 .scopes("all")
                 .and()
                 .withClient("shop")
                 .secret(passwordEncoder.encode("shop"))
-                .authorizedGrantTypes("refresh_token", "authorization_code", "password")
+                .authorizedGrantTypes("refresh_token", "authorization_code", "password", "access_token", "check_token")
+                .accessTokenValiditySeconds(3600)
+                .scopes("all")
+                .and()
+                .withClient("blog")
+                .secret(passwordEncoder.encode("blog"))
+                .authorizedGrantTypes("refresh_token", "authorization_code", "password", "access_token", "check_token")
                 .accessTokenValiditySeconds(3600)
                 .scopes("all");
     }
@@ -91,7 +96,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.allowFormAuthenticationForClients();
-        security.checkTokenAccess("isAuthenticated()");
-        security.tokenKeyAccess("isAuthenticated()");
+        security.checkTokenAccess("permitAll()");
+        security.tokenKeyAccess("permitAll()");
     }
 }

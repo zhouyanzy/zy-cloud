@@ -10,7 +10,9 @@
 │  │  │─basic-eureka------------------------------注册中心eureka
 │  │  │─basic-zuul--------------------------------网关zuul
 │  │  │─basic-hystrix-dashboard-------------------hystrix监控
-│  │  └─basic-tm----------------------------------Tx-Manager
+│  │  │─basic-xxl-executor------------------------xxl-job执行器
+│  │  │─basic-tm----------------------------------Tx-Manager
+│  │  └─basic-admin-------------------------------spring-boot admin
 │  ├─blog---------------------------------------博客业务模块
 │  │  │─blog-manager------------------------------博客后台管理
 │  │  └─blog-home---------------------------------博客首页
@@ -38,19 +40,26 @@
  - `8950` shop-talk
  - `9010` tm
  - `9020` tm-listen
-
+ - `9030` xxl-job-admin
+ - `9040` xxl-job-executor
+ - `9050` basic-admin
+ 
 ## 项目地址
  - 注册中心：http://zhouy.top:8760
  - hystrix监控：http://zhouy.top:8800/hystrix
  - swagger文档：http://zhouy.top:8770/swagger-ui.html
  - lcn后台管理：http://zhouy.top:9010/admin/index.html#/login，密码：codingapi
+ - xxl后台管理：http://zhouy.top:9030/xxl-job-admin，账号密码：admin/123456
+ - spring-boot admin监控：http://zhouy.top:9050/login，账号密码：admin/123456
 
 ## Host配置
  - 127.0.0.1 zhouy.top
 
 ## 参考项目
  - blog-manage部分参考了dbblog
- - 分布式框架tx-lcn
+ - 分布式事务框架tx-lcn
+ - 分布式任务调度xxl-job
+
 ```
 /**
  * @author zhouy

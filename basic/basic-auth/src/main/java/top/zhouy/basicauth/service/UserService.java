@@ -37,7 +37,7 @@ public class UserService implements org.springframework.security.core.userdetail
             authorities.add(new SimpleGrantedAuthority(role));
             // 线上环境应该通过用户名查询数据库获取加密后的密码
             String password = passwordEncoder.encode("admin");
-            return new org.springframework.security.core.userdetails.User(username,password, authorities);
+            return new org.springframework.security.core.userdetails.User(username, password, authorities);
         }
     }
 }

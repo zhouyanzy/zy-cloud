@@ -20,6 +20,7 @@ import top.zhouy.shoporder.mapper.ShopOrderMapper;
 import top.zhouy.shoporder.service.ShopOrderService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import top.zhouy.util.utils.RedisUtils;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -138,6 +139,8 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
     )
     @Override
     public Boolean createOrder(ShopOrder shopOrder) {
+        shopOrder.setId(RedisUtils.getId("SHOP_ORDER"));
+        System.out.println(shopOrder.getId());
         return shopOrderMapper.insert(shopOrder) > 0;
     }
 

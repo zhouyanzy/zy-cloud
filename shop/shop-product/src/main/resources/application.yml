@@ -56,3 +56,17 @@ mybatis-plus:
     db-config:
       id-type: auto
       field-strategy: not_empty
+
+security:
+  oauth2:
+    client:
+      id: ${spring.application.name}
+      client-id: shop
+      client-secret: shop
+      access-token-uri: http://zhouy.top:8790/oauth/token
+      user-authorization-uri: http://zhouy.top:8790/oauth/authorize
+      authentication-scheme: header
+    resource:
+      jwt:
+        key-uri: http://zhouy.top:8790/oauth/token_key
+        key-value: key_zy

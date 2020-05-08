@@ -19,6 +19,9 @@
 		<module>basic-config</module>
 		<module>basic-eureka</module>
 		<module>basic-zuul</module>
+		<module>basic-tm</module>
+		<module>basic-hystrix-dashboard</module>
+		<module>basic-xxl-executor</module>
 	</modules>
 
 </project>

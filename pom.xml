@@ -16,9 +16,9 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>basic</module>
 		<module>common</module>
 		<module>util</module>
+		<module>basic</module>
 		<module>blog</module>
 		<module>shop</module>
 	</modules>
@@ -151,6 +151,14 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.61</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.databene</groupId>
+			<artifactId>contiperf</artifactId>
+			<version>2.3.4</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 </project>

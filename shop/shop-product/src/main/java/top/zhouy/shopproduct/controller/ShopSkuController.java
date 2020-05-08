@@ -20,6 +20,8 @@ import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
@@ -60,11 +62,19 @@ public class ShopSkuController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @GetMapping("/me")
+    @ApiOperation(value = "判断有没有登录")
+    @ResponseBody
+    public Authentication me(Authentication authentication) {
+        return authentication;
+    }
+
     /**
      * 查找商品sku
      * @param productId
      * @return
      */
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/list")
     @ApiOperation(value = "查询规格")
     /**
