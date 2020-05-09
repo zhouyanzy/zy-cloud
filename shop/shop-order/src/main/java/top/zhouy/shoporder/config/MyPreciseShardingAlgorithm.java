@@ -16,7 +16,7 @@ public class MyPreciseShardingAlgorithm implements PreciseShardingAlgorithm<Long
 	static {
 		ShardingRangeConfig config = new ShardingRangeConfig();
 		config.setStart(1);
-		config.setEnd(30);
+		config.setEnd(3000000);
 		config.setDatasourceList(Arrays.asList("ds0", "ds1"));
 		configs.add(config);
 

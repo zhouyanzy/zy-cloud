@@ -40,7 +40,7 @@ spring:
               algorithm-expression: shop_order_$->{id % 2}
       default-database-strategy:
         standard:
-          sharding-column: id
+          sharding-column: buyer_id
           precise-algorithm-class-name: top.zhouy.shoporder.config.MyPreciseShardingAlgorithm
       default-data-source-name: ds0
       master-slave-rules:
@@ -50,6 +50,9 @@ spring:
         ds1:
           master-data-source-name: master1
           slave-data-source-names: master1slave
+    props:
+      sql:
+        show: true
   main:
     allow-bean-definition-overriding: true
 
