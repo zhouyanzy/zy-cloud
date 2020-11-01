@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 授权服务配置
  * @author zhouYan
  * @date 2020/3/10 16:28
  */
@@ -53,9 +54,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private JwtTokenEnhancer jwtTokenEnhancer;
 
-    /*@Autowired
-    private TokenStore redisTokenStore;*/
-
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
@@ -66,7 +64,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         enhancerChain.setTokenEnhancers(delegates);
         endpoints.authenticationManager(authenticationManager)
                 .userDetailsService(userService)
-                .tokenStore(jwtTokenStore) //配置令牌存储策略
+                //配置令牌存储策略
+                .tokenStore(jwtTokenStore)
                 .accessTokenConverter(jwtAccessTokenConverter)
                 .tokenEnhancer(enhancerChain);
     }
@@ -95,8 +94,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        // 支持将client参数放在header或body中
         security.allowFormAuthenticationForClients();
-        security.checkTokenAccess("permitAll()");
+        security.checkTokenAccess("isAuthenticated()");
         security.tokenKeyAccess("permitAll()");
     }
 }

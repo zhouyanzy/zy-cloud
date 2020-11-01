@@ -7,8 +7,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * @author zhouYan
  * @date 2020/3/10 16:42
@@ -24,16 +22,14 @@ public class ClientWebsecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.requestMatchers().anyRequest()
                 .and()
                 .authorizeRequests()
-                /*.antMatchers(
+                .antMatchers(
                         "/swagger-ui.html",
-                        "/oauth/authorize",
-                        "/sku/me",
                         "/swagger-resources/**",
                         "/v2/**",
                         "/init/**",
                         "/webjars/**",
                         "/actuator/**",
-                        "/hystrix.stream").permitAll()*/
-                .anyRequest().permitAll();
+                        "/hystrix.stream").permitAll()
+                .anyRequest().authenticated();
     }
 }

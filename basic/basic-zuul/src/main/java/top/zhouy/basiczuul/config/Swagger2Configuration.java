@@ -5,10 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.OAuthBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.builders.*;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -21,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * swagger配置
  * @author zhouYan
  * @date 2020/3/11 15:24
  */
@@ -35,11 +34,11 @@ public class Swagger2Configuration {
         @Override
         public List<SwaggerResource> get() {
             List resources = new ArrayList();
-            resources.add(swaggerResource("授权中心","/basic-auth/v2/api-docs","2.0"));
+            resources.add(swaggerResource("授权中心","/api-basic-auth/v2/api-docs","2.0"));
             resources.add(swaggerResource("博客后台","/api-blog-manage/v2/api-docs","2.0"));
-            resources.add(swaggerResource("订单中心","/shop-order/v2/api-docs","2.0"));
-            resources.add(swaggerResource("支付中心","/shop-pay/v2/api-docs","2.0"));
-            resources.add(swaggerResource("商品中心","/shop-product/v2/api-docs","2.0"));
+            resources.add(swaggerResource("订单中心","/api-shop-order/v2/api-docs","2.0"));
+            resources.add(swaggerResource("支付中心","/api-shop-pay/v2/api-docs","2.0"));
+            resources.add(swaggerResource("商品中心","/api-shop-product/v2/api-docs","2.0"));
             return resources;
         }
 
@@ -54,8 +53,14 @@ public class Swagger2Configuration {
 
     @Bean
     public Docket createRestApi() {
+        List<Parameter> pars = new ArrayList<Parameter>();
+        pars.add(new ParameterBuilder().name("Authorization").description("Authorization")
+                .modelRef(new ModelRef("string")).parameterType("header")
+                .required(false).build());
+        //根据每个方法名也知道当前方法在设置什么参数
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo());
+                .apiInfo(apiInfo())
+                .globalOperationParameters(pars);
     }
 
     private ApiInfo apiInfo() {

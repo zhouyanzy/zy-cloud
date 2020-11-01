@@ -21,7 +21,8 @@
 		<module>basic-zuul</module>
 		<module>basic-tm</module>
 		<module>basic-hystrix-dashboard</module>
-		<module>basic-xxl-executor</module>
+		<!--<module>basic-xxl-executor</module>-->
+		<module>basic-admin</module>
 	</modules>
 
 </project>

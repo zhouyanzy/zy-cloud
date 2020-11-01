@@ -69,4 +69,5 @@ security:
     resource:
       jwt:
         key-uri: http://zhouy.top:8790/oauth/token_key
-        key-value: key_zy
+      token-info-uri: http://zhouy.top:8790/oauth/check_token #检查令牌
+      token-type:

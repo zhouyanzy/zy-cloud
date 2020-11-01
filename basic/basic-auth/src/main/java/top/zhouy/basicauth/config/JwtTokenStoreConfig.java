@@ -1,5 +1,6 @@
 package top.zhouy.basicauth.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,11 +10,18 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 /**
+ * JWTToken配置
  * @author zhouYan
  * @date 2020/3/10 17:17
  */
 @Configuration
 public class JwtTokenStoreConfig {
+
+    /**
+     * jwt 对称加密密钥
+     */
+    @Value("${spring.security.oauth2.jwt.signingKey}")
+    private String signingKey;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -29,7 +37,7 @@ public class JwtTokenStoreConfig {
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
         //配置JWT使用的秘钥
-        accessTokenConverter.setSigningKey("key_zy");
+        accessTokenConverter.setSigningKey(signingKey);
         return accessTokenConverter;
     }
 

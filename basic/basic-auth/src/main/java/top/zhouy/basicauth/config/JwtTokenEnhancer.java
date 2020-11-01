@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * tokenEnhancer
  * @author zhouYan
  * @date 2020/3/10 17:40
  */
@@ -16,7 +17,7 @@ public class JwtTokenEnhancer implements TokenEnhancer {
 
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
-        Map<String, Object> info = new HashMap<>();
+        Map<String, Object> info = new HashMap<>(1);
         info.put("enhance", "enhance info");
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
         return accessToken;

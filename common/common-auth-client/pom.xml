@@ -4,37 +4,29 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>top.zhouy</groupId>
-		<artifactId>shop</artifactId>
+		<artifactId>common</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<groupId>top.zhouy</groupId>
-	<artifactId>shop-product</artifactId>
+	<artifactId>common-auth-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>shop-product</name>
+	<name>common-auth-client</name>
 	<description>Demo project for Spring Boot</description>
 
 	<dependencies>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.0</version>
-		</dependency>
-
 		<dependency>
 			<groupId>top.zhouy</groupId>
 			<artifactId>common-response</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-
-		<!-- oauth2 -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-oauth2</artifactId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.security.oauth.boot</groupId>
-			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
-			<version>2.1.0.RELEASE</version>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-okhttp</artifactId>
 		</dependency>
 	</dependencies>
+
 </project>

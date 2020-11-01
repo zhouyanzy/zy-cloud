@@ -16,6 +16,7 @@
 
 	<modules>
 		<module>common-response</module>
+		<module>common-auth-client</module>
 	</modules>
 
 </project>

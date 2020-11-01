@@ -1,27 +1,33 @@
 package top.zhouy.basiczuul.filter;
 
-import cn.hutool.core.util.StrUtil;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import top.zhouy.commonauthclient.service.AuthService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 
 /**
+ * 鉴权
  * @author zhouYan
  * @date 2020/4/27 14:30
  */
 @Component
-public class CustomFilter extends ZuulFilter {
+public class AuthFilter extends ZuulFilter {
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private AuthService authService;
 
     /**
      * filterType：过滤器类型
@@ -62,23 +68,31 @@ public class CustomFilter extends ZuulFilter {
     public Object run() throws ZuulException {
         RequestContext requestContext =  RequestContext.getCurrentContext();
         HttpServletRequest  request = requestContext.getRequest();
-        //token对象
-        String token = request.getHeader("token");
         String authorization = request.getHeader("Authorization");
-        log.info("header::token=" + token + ";header::authorization=" + authorization );
-        if(StringUtils.isBlank((token))){
-            token  = request.getParameter("token");
+        if (StringUtils.isBlank(authorization)) {
+            log.info("------游客访问------");
+            return null;
+        } else {
+            log.info("------访问------" + authorization);
+            String method = request.getMethod();
+            String url = request.getRequestURI();
+            // 鉴权
+            if (!authService.auth(authorization, url, method)) {
+                requestContext.setSendZuulResponse(false);
+                requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+                requestContext.setResponseBody("用户没有权限");
+                HttpServletResponse response = requestContext.getResponse();
+                response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+                response.setContentType("application/json;charset=utf-8");
+            } else {
+                requestContext.setSendZuulResponse(true);
+                // 添加请求头，传递到业务服务
+                requestContext.addZuulRequestHeader("Authorization", authorization);
+                requestContext.addZuulRequestHeader("token", "bearer" + authService.getToken(authorization));
+                // 添加响应头，返回给前端
+                requestContext.addZuulResponseHeader("Authorization", authorization);
+            }
         }
-        if (StringUtils.isBlank(token)) {
-            requestContext.setSendZuulResponse(false);
-            requestContext.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-        }
-        //获取response对象
-        HttpServletResponse response = requestContext.getResponse();
-        //添加请求头，传递到业务服务
-        //requestContext.addZuulRequestHeader("Authorization", authorization);
-        //添加响应头，返回给前端
-        //ctx.addZuulResponseHeader("Authorization", header);
         return null;
     }
 

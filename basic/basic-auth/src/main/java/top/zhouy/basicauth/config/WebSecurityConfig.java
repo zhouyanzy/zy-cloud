@@ -6,15 +6,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import top.zhouy.basicauth.service.UserService;
+import top.zhouy.basicauth.service.impl.UserServiceImpl;
 
 /**
+ * SpringSecurity授权配置
  * @author zhouYan
  * @date 2020/3/10 16:43
  */
@@ -26,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
 
     @Bean
     @Override
@@ -36,21 +34,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //自定义AuthenticationProvider实例加入AuthenticationManager
-        //auth.authenticationProvider(authenticationProvider);
+        // 可自定义AuthenticationProvider实例加入AuthenticationManager：auth.authenticationProvider(authenticationProvider)
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 
-    /**
-     * 允许匿名访问所有接口 主要是 oauth 接口
-     * @param http
-     * @throws Exception
-     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
         http.authorizeRequests()
-                .anyRequest().permitAll()
+                .antMatchers(
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/v2/**",
+                        "/init/**",
+                        "/webjars/**",
+                        "/actuator/**",
+                        "/hystrix.stream").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .httpBasic();
+                .formLogin().permitAll();
     }
 }

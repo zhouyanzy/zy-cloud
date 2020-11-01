@@ -43,6 +43,8 @@
  - `9030` xxl-job-admin
  - `9040` xxl-job-executor
  - `9050` basic-admin
+ - `8848` basic-nacos
+ 
  
 ## 项目地址
  - 注册中心：http://zhouy.top:8760

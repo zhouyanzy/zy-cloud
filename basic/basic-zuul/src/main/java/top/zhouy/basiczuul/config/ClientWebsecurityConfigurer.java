@@ -6,10 +6,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author zhouYan
@@ -23,7 +19,17 @@ public class ClientWebsecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/**").authorizeRequests()
+        http.requestMatchers().anyRequest()
+                .and()
+                .authorizeRequests()
+                .antMatchers(
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/v2/**",
+                        "/init/**",
+                        "/webjars/**",
+                        "/actuator/**",
+                        "/hystrix.stream").permitAll()
                 .anyRequest().permitAll();
     }
 }
