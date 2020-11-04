@@ -1,27 +1,29 @@
 package top.zhouy.shopproduct.config;
 
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author zhouYan
- * @date 2020/3/10 16:42
+ * @description: 资源服务器配置
+ * @author: zhouy
+ * @create: 2020-11-03 14:09:00
  */
 @Configuration
-@EnableWebSecurity
+@EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@EnableOAuth2Sso
-public class ClientWebsecurityConfigurer extends WebSecurityConfigurerAdapter {
+public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.requestMatchers().anyRequest()
-                .and()
-                .authorizeRequests()
+        http.cors().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
+                .and().authorizeRequests()
                 .antMatchers(
                         "/swagger-ui.html",
                         "/swagger-resources/**",
@@ -30,6 +32,7 @@ public class ClientWebsecurityConfigurer extends WebSecurityConfigurerAdapter {
                         "/webjars/**",
                         "/actuator/**",
                         "/hystrix.stream").permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and().httpBasic();
     }
 }

@@ -1,4 +1,4 @@
-package top.zhouy.commonauthclient.config;
+package top.zhouy.commonprovider.config;
 
 import feign.Feign;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;

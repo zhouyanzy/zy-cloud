@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import top.zhouy.commonauthclient.service.AuthService;
+import top.zhouy.commonprovider.service.AuthService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,7 +73,7 @@ public class AuthFilter extends ZuulFilter {
             log.info("------游客访问------");
             return null;
         } else {
-            log.info("------访问------" + authorization);
+            log.info("------登录访问------" + authorization);
             String method = request.getMethod();
             String url = request.getRequestURI();
             // 鉴权
@@ -88,7 +88,7 @@ public class AuthFilter extends ZuulFilter {
                 requestContext.setSendZuulResponse(true);
                 // 添加请求头，传递到业务服务
                 requestContext.addZuulRequestHeader("Authorization", authorization);
-                requestContext.addZuulRequestHeader("token", "bearer" + authService.getToken(authorization));
+                requestContext.addZuulRequestHeader("token", authService.getToken(authorization));
                 // 添加响应头，返回给前端
                 requestContext.addZuulResponseHeader("Authorization", authorization);
             }

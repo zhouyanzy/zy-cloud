@@ -1,4 +1,4 @@
-package top.zhouy.commonauthclient.provider;
+package top.zhouy.commonprovider.provider;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;

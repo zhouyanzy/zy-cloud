@@ -1,8 +1,8 @@
-package top.zhouy.commonauthclient.service;
+package top.zhouy.commonprovider.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.zhouy.commonauthclient.provider.AuthProvider;
+import top.zhouy.commonprovider.provider.AuthProvider;
 import top.zhouy.commonresponse.bean.model.R;
 
 /**

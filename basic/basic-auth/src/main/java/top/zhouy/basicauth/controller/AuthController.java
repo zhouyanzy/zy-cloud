@@ -2,15 +2,13 @@ package top.zhouy.basicauth.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import top.zhouy.basicauth.service.AuthService;
 import top.zhouy.commonresponse.bean.model.R;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -31,8 +28,11 @@ import javax.servlet.http.HttpServletRequest;
 @Api(description = "权限接口")
 public class AuthController {
 
-    @Resource( name = "jwtTokenStore")
-    private TokenStore jwtTokenStore;
+    /**
+     * jwt 对称加密密钥
+     */
+    @Value("${spring.security.oauth2.jwt.signingKey}")
+    private String signingKey;
 
     @Autowired
     private AuthService authService;
@@ -49,7 +49,9 @@ public class AuthController {
     @ApiOperation(value = "解析token", notes = "解析token")
     @GetMapping("/getToken")
     public R<String> getToken(String jwt) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return R.okData(jwtTokenStore.readAccessToken(String.valueOf(authentication.getPrincipal())));
+        if (jwt.startsWith("bearer ")) {
+            jwt = StringUtils.substring(jwt, "bearer ".length());
+        }
+        return R.okData(new ObjectMapper().writeValueAsString(Jwts.parser().setSigningKey(signingKey.getBytes()).parseClaimsJws(jwt)));
     }
 }

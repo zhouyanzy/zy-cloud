@@ -1,4 +1,4 @@
-package top.zhouy.commonauthclient.service;
+package top.zhouy.commonprovider.service;
 
 /**
  * @description: 鉴权接口

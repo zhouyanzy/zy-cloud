@@ -4,22 +4,19 @@ package top.zhouy.shopproduct.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.netflix.discovery.converters.Auto;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.stereotype.Controller;
 import top.zhouy.commonresponse.bean.model.R;
 import top.zhouy.shopproduct.bean.entity.ShopCategory;
 import top.zhouy.shopproduct.service.ShopCategoryService;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -44,6 +41,8 @@ public class ShopCategoryController {
     @Autowired
     private ShopCategoryService shopCategoryService;
 
+    private Logger log = LoggerFactory.getLogger(this.getClass());
+
     /**
      * 查找分类列表
      * @param categoryName
@@ -67,6 +66,8 @@ public class ShopCategoryController {
     @Cacheable(cacheNames = "shop::category::list", key = "#categoryName + '_' + #page.current + '_' + #page.size")
     public R list(@ApiParam(value = "分类名称") @RequestParam(value = "categoryName", required = false) String categoryName,
                   @ApiParam(value = "分页，当前页数'current'，每页条数'size'") Page page){
+        // UserVO userVO = LOCAL_USER.get();
+        // log.info(userVO.getUsername());
         QueryWrapper<ShopCategory> queryWrapper = new QueryWrapper<>();
         Optional.ofNullable(categoryName).ifPresent(t -> queryWrapper.like("categoryName", t));
         IPage<ShopCategory> shopCategoryIPage = shopCategoryService.page(page, queryWrapper);

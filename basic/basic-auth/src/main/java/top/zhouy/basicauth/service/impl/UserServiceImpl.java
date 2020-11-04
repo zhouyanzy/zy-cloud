@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import top.zhouy.basicauth.bean.entity.User;
 import top.zhouy.basicauth.bean.vo.UserRoleVO;
+import top.zhouy.basicauth.bean.vo.UserVO;
 import top.zhouy.basicauth.mapper.UserMapper;
 import top.zhouy.basicauth.mapper.UserRoleMapper;
 
@@ -51,7 +52,12 @@ public class UserServiceImpl implements org.springframework.security.core.userde
             roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getRoleName())));
             // 线上环境应该通过用户名查询数据库获取加密后的密码
             String password = passwordEncoder.encode(user.getPassword());
-            return new org.springframework.security.core.userdetails.User(username, password, authorities);
+            UserVO userVO = new UserVO();
+            userVO.setName(user.getName());
+            userVO.setPhone(user.getAvatar());
+            userVO.setAuthorities(authorities);
+            userVO.setPassword(password);
+            return userVO;
         }
     }
 }

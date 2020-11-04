@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableZuulProxy
-@EnableFeignClients("top.zhouy.commonauthclient.provider")
+@EnableFeignClients("top.zhouy.*.provider")
 @EnableHystrix
 @ComponentScan(basePackages = {"top.zhouy"})
 public class BasicZuulApplication {

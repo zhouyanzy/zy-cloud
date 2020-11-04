@@ -42,6 +42,8 @@ spring:
            reset-enable: true
            login-username: admin
            login-password: admin
+  main:
+    allow-bean-definition-overriding: true
 
 eureka:
   client:
@@ -70,4 +72,3 @@ security:
       jwt:
         key-uri: http://zhouy.top:8790/oauth/token_key
       token-info-uri: http://zhouy.top:8790/oauth/check_token #检查令牌
-      token-type:
