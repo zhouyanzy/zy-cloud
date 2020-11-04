@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import top.zhouy.blogmanage.bean.entity.BlogCategory;
 import top.zhouy.blogmanage.bean.type.CategoryType;
 import top.zhouy.blogmanage.bean.vo.BlogCategoryVO;
-import top.zhouy.blogmanage.service.*;
+import top.zhouy.blogmanage.service.BlogCategoryService;
 import top.zhouy.commonresponse.bean.model.R;
-import top.zhouy.commonresponse.exception.BsException;
 import top.zhouy.util.service.DozerService;
 
-import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * 分类Controller
@@ -33,29 +33,6 @@ public class BlogCategoryController {
 
     @Autowired
     private DozerService dozerService;
-
-    /**
-     * 获取分类类型
-     * @return
-     */
-    @GetMapping("/getCategoryType")
-    @ApiOperation(value = "获取分类类型")
-    public R getCategoryType(){
-        List<Map<String, String>> data = new ArrayList<>();
-        Map<String, String> type = new HashMap<>();
-        type.put("id", "CATEGORY_FIRST");
-        type.put("name", "CATEGORY_FIRST");
-        data.add(type);
-        type = new HashMap<>();
-        type.put("id", "CATEGORY_SECOND");
-        type.put("name", "CATEGORY_SECOND");
-        data.add(type);
-        type = new HashMap<>();
-        type.put("id", "CATEGORY_THIRD");
-        type.put("name", "CATEGORY_THIRD");
-        data.add(type);
-        return R.okData(data);
-    }
 
     /**
      * 查询分类列表

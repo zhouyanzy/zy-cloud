@@ -31,11 +31,12 @@ public class Swagger2Configuration {
         @Override
         public List<SwaggerResource> get() {
             List resources = new ArrayList();
-            resources.add(swaggerResource("授权中心","/api-basic-auth/v2/api-docs","2.0"));
-            resources.add(swaggerResource("博客后台","/api-blog-manage/v2/api-docs","2.0"));
-            resources.add(swaggerResource("订单中心","/api-shop-order/v2/api-docs","2.0"));
-            resources.add(swaggerResource("支付中心","/api-shop-pay/v2/api-docs","2.0"));
-            resources.add(swaggerResource("商品中心","/api-shop-product/v2/api-docs","2.0"));
+            resources.add(swaggerResource("授权中心","/api-basic-auth/v2/api-docs","1.0"));
+            resources.add(swaggerResource("博客后台","/api-blog-manage/v2/api-docs","1.0"));
+            resources.add(swaggerResource("博客前端","/api-blog-home/v2/api-docs","1.0"));
+            resources.add(swaggerResource("订单中心","/api-shop-order/v2/api-docs","1.0"));
+            resources.add(swaggerResource("支付中心","/api-shop-pay/v2/api-docs","1.0"));
+            resources.add(swaggerResource("商品中心","/api-shop-product/v2/api-docs","1.0"));
             return resources;
         }
 

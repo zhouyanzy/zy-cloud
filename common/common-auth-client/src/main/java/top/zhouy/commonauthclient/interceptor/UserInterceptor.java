@@ -9,14 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
+import static top.zhouy.commonauthclient.entity.UserUtils.LOCAL_USER;
+
 /**
  * @description: 用户拦截器，保存用户信息
  * @author: zhouy
  * @create: 2020-11-03 17:44:00
  */
 public class UserInterceptor extends HandlerInterceptorAdapter {
-
-    public static final ThreadLocal<UserVO> LOCAL_USER = new ThreadLocal<UserVO>();
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

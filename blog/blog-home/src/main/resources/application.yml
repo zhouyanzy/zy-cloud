@@ -53,6 +53,8 @@ spring:
         max-wait: -1ms
         max-idle: 8
         min-idle: 0
+  main:
+    allow-bean-definition-overriding: true
 
 eureka:
   client:
@@ -63,3 +65,17 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   typeAliasesPackage: top.zhouy.bloghome.bean.entity
   type-enums-package: top.zhouy.bloghome.bean.type
+
+security:
+  oauth2:
+    client:
+      id: ${spring.application.name}
+      client-id: blog
+      client-secret: blog
+      access-token-uri: http://zhouy.top:8790/oauth/token
+      user-authorization-uri: http://zhouy.top:8790/oauth/authorize
+      authentication-scheme: header
+    resource:
+      jwt:
+        key-uri: http://zhouy.top:8790/oauth/token_key
+      token-info-uri: http://zhouy.top:8790/oauth/check_token #检查令牌

@@ -18,37 +18,24 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.metrics.avg.ParsedAvg;
-import org.elasticsearch.search.aggregations.metrics.max.ParsedMax;
-import org.elasticsearch.search.aggregations.metrics.min.ParsedMin;
-import org.elasticsearch.search.aggregations.metrics.percentiles.ParsedPercentiles;
-import org.elasticsearch.search.aggregations.metrics.percentiles.Percentile;
-import org.elasticsearch.search.aggregations.metrics.stats.ParsedStats;
-import org.elasticsearch.search.aggregations.metrics.sum.ParsedSum;
-import org.elasticsearch.search.aggregations.metrics.sum.SumAggregationBuilder;
-import org.elasticsearch.search.aggregations.metrics.valuecount.ParsedValueCount;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhouYan
@@ -79,7 +66,7 @@ public class ElasticSearchUtils {
             // 判断是否创建成功
             success = createIndexResponse.isAcknowledged();
             log.info("是否创建成功：{}", success);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("创建索引失败", e);
         }
         return success;
@@ -99,7 +86,7 @@ public class ElasticSearchUtils {
             AcknowledgedResponse acknowledgedResponse = restHighLevelClient.indices().delete(request, RequestOptions.DEFAULT);
             // 判断是否删除成功
             success = acknowledgedResponse.isAcknowledged();
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("删除失败", e);
         }
         return success;
@@ -140,17 +127,42 @@ public class ElasticSearchUtils {
                 UpdateResponse response = restHighLevelClient.update(updateRequest, RequestOptions.DEFAULT);
                 log.info("创建状态：{}", response.status());
             }
-        } catch (IOException e){
+        } catch (Exception e){
             log.error("保存文档失败");
         }
     }
 
     /**
      * 查询数据
-     * @param searchRequest
+     * @param index
+     * @param map
+     * @param sort
+     * @param pageable
      * @return
      */
-    public static Object query(SearchRequest searchRequest) {
+    public static Object query(String index, Map<String, String> map, Map<String, SortOrder> sort, Pageable pageable) {
+        // 构建查询条件
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        // 需要注意这里是从多少条开始
+        searchSourceBuilder.from(pageable.getPageNumber() * pageable.getPageSize());
+        //共返回多少条数据
+        searchSourceBuilder.size(pageable.getPageSize());
+        //根据自己的需求排序
+        if (sort != null) {
+            for (String name : sort.keySet()) {
+                SortOrder sortOrder = sort.get(name);
+                searchSourceBuilder.sort(new FieldSortBuilder(name).order(sortOrder));
+            }
+        }
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        for (String name : map.keySet()) {
+            String content = map.get(name);
+            boolQueryBuilder.should(QueryBuilders.matchQuery(name, content));
+        }
+        searchSourceBuilder.query(boolQueryBuilder);
+        // 创建查询请求对象，将查询对象配置到其中
+        SearchRequest searchRequest = new SearchRequest(index);
+        searchRequest.source(searchSourceBuilder);
         List<Object> returnObject = new ArrayList<>();
         try {
             // 执行查询，然后处理响应结果
@@ -164,7 +176,7 @@ public class ElasticSearchUtils {
                     returnObject.add(hit.getSourceAsString());
                 }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("查询数据失败", e);
         }
         return returnObject;

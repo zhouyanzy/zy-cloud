@@ -56,7 +56,7 @@ public class Swagger2Configuration {
         AuthorizationScope authorizationScope = new AuthorizationScope("web", "access_token");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Collections.singletonList(new SecurityReference("Bearer",authorizationScopes));
+        return Collections.singletonList(new SecurityReference("Bearer", authorizationScopes));
     }
 
     private ApiInfo apiInfo() {

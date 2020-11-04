@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import top.zhouy.util.service.DozerService;
 
 /**
+ * 对象复制接口实现类
  * @author zhouYan
  * @date 2020/3/13 15:34
  */

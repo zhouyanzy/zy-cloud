@@ -22,7 +22,10 @@ public class DataSourceConfig {
         return new DruidDataSource();
     }
 
-    // 配置事物管理器
+    /**
+     * 配置事物管理器
+     * @return
+     */
     @Bean(name="transactionManager")
     public DataSourceTransactionManager transactionManager(){
         return new DataSourceTransactionManager(dataSource());

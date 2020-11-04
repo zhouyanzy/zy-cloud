@@ -7,21 +7,24 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.stereotype.Controller;
 import top.zhouy.blogmanage.bean.entity.BlogArticle;
-import top.zhouy.blogmanage.bean.entity.BlogCategory;
-import top.zhouy.blogmanage.bean.status.ArticleStatus;
-import top.zhouy.blogmanage.bean.type.CategoryType;
 import top.zhouy.blogmanage.bean.vo.BlogArticleVO;
-import top.zhouy.blogmanage.bean.vo.BlogCategoryVO;
 import top.zhouy.blogmanage.service.BlogArticleCategoryService;
 import top.zhouy.blogmanage.service.BlogArticleService;
+import top.zhouy.commonresponse.bean.enums.ErrorCode;
 import top.zhouy.commonresponse.bean.model.R;
+import top.zhouy.commonresponse.exception.BsException;
 import top.zhouy.util.service.DozerService;
+import top.zhouy.util.utils.ElasticSearchUtils;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -98,6 +101,9 @@ public class BlogArticleController {
         Boolean success = blogArticleService.saveOrUpdate(blogArticleVO);
         Optional.ofNullable(blogArticleVO.getCategoryList()).ifPresent(t -> t.forEach(o -> {o.setArticleId(blogArticleVO.getId());blogArticleCategoryService.saveOrUpdate(o);}));
         Optional.ofNullable(blogArticleVO.getTagList()).ifPresent(t -> t.forEach(o -> {o.setArticleId(blogArticleVO.getId());blogArticleCategoryService.saveOrUpdate(o);}));
+        if (success) {
+            ElasticSearchUtils.saveDocument("blog", String.valueOf(blogArticleVO.getId()), blogArticleVO, blogArticleVO.getArchive());
+        }
         return R.okData(success);
     }
 
@@ -113,6 +119,55 @@ public class BlogArticleController {
             blogArticleService.removeById(id);
         }
         return R.okData(true);
+    }
+
+    /**
+     * 查找博客，从elasticSearch
+     * @param text
+     * @return
+     */
+    @GetMapping("/searchByES")
+    @ApiOperation(value = "查找博客，从elasticSearch")
+    public R searchByES(String text, Pageable pageable){
+        HashMap map = new HashMap(1);
+        map.put("title", text);
+        map.put("content", text);
+        return R.okData(ElasticSearchUtils.query("blog", map, null, pageable));
+    }
+
+    /**
+     * 创建博客索引
+     * @return
+     */
+    @PostMapping("/createIndex")
+    @ApiOperation(value = "创建博客索引")
+    public R createIndex(){
+        XContentBuilder builder = null;
+        try {
+            builder = XContentFactory.jsonBuilder();
+            builder.startObject().field("dynamic", true)
+                        .startObject("properties")
+                        .startObject("id").field("type", "integer").endObject()
+                        .startObject("title").field("type", "text").endObject()
+                        .startObject("content").field("type", "text").endObject()
+                        .startObject("status").field("type", "text").endObject()
+                        .startObject("createdAt").field("type", "date").endObject()
+                        .startObject("updatedAt").field("type", "date").endObject()
+                        .endObject()
+                    .endObject();
+        } catch (IOException e) {
+            throw new BsException(ErrorCode.UNKNOWN, "创建博客索引失败");
+        }
+        // 创建索引配置信息，配置
+        Settings settings = Settings.builder()
+                .put("index.number_of_shards", 1)
+                .put("index.number_of_replicas", 0)
+                .build();
+        // 新建创建索引请求对象，然后设置索引类型（ES 7.0 将不存在索引类型）和 mapping 与 index 配置
+        CreateIndexRequest request = new CreateIndexRequest("blog", settings);
+        request.mapping("doc", builder);
+        ElasticSearchUtils.deleteIndex("blog");
+        return R.okData(ElasticSearchUtils.createIndex(request));
     }
 }
 

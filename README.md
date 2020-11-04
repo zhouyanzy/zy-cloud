@@ -58,7 +58,6 @@
  - 127.0.0.1 zhouy.top
 
 ## 参考项目
- - blog-manage部分参考了dbblog
  - 分布式事务框架tx-lcn
  - 分布式任务调度xxl-job
 

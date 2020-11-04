@@ -1,10 +1,11 @@
-package top.zhouy.blogmanage.service.impl;
+package top.zhouy.bloghome.service.impl;
 
-import top.zhouy.blogmanage.bean.entity.BlogCategory;
-import top.zhouy.blogmanage.mapper.BlogCategoryMapper;
-import top.zhouy.blogmanage.service.BlogCategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import top.zhouy.bloghome.bean.entity.BlogCategory;
+import top.zhouy.bloghome.mapper.BlogCategoryMapper;
+import top.zhouy.bloghome.service.BlogCategoryService;
+
 
 /**
  * <p>

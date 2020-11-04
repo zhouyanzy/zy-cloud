@@ -1,8 +1,7 @@
-package top.zhouy.blogmanage.mapper;
+package top.zhouy.bloghome.mapper;
 
-import org.springframework.stereotype.Component;
-import top.zhouy.blogmanage.bean.entity.BlogArticle;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import top.zhouy.bloghome.bean.entity.BlogArticle;
 
 /**
  * <p>
@@ -12,7 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author zhouy
  * @since 2020-03-18
  */
-@Component
 public interface BlogArticleMapper extends BaseMapper<BlogArticle> {
 
 }

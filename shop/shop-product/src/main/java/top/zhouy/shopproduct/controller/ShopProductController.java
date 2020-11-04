@@ -8,14 +8,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
-import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.index.query.MatchPhraseQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import top.zhouy.commonresponse.bean.enums.ErrorCode;
 import top.zhouy.commonresponse.bean.model.R;
@@ -86,16 +83,10 @@ public class ShopProductController {
      */
     @GetMapping("/searchByES")
     @ApiOperation(value = "查找商品，从elasticSearch")
-    public R searchByES(String productName){
-        // 构建查询条件
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        MatchPhraseQueryBuilder matchPhraseQueryBuilder = QueryBuilders
-                .matchPhraseQuery("productName", productName);
-        searchSourceBuilder.query(matchPhraseQueryBuilder);
-        // 创建查询请求对象，将查询对象配置到其中
-        SearchRequest searchRequest = new SearchRequest("product");
-        searchRequest.source(searchSourceBuilder);
-        return R.okData(ElasticSearchUtils.query(searchRequest));
+    public R searchByES(String productName, Pageable pageable){
+        HashMap map = new HashMap(1);
+        map.put("productName", productName);
+        return R.okData(ElasticSearchUtils.query("product", map, null, pageable));
     }
 
     /**
@@ -109,36 +100,20 @@ public class ShopProductController {
         XContentBuilder mapping = null;
         try {
             mapping = XContentFactory.jsonBuilder()
-                    .startObject()
-                    .field("dynamic", true)
-                    .startObject("properties")
-                    .startObject("productName")
-                    .field("type","text")
-                    .endObject()
-                    .startObject("detail")
-                    .field("type","text")
-                    .startObject("fields")
-                    .startObject("keyword")
-                    .field("type","keyword")
-                    .endObject()
-                    .endObject()
-                    .endObject()
-                    .startObject("productImg")
-                    .field("type","text")
-                    .endObject()
-                    .startObject("stock")
-                    .field("type","integer")
-                    .endObject()
-                    .startObject("price")
-                    .field("type","float")
-                    .endObject()
-                    .startObject("sales")
-                    .field("type","integer")
-                    .endObject()
-                    .startObject("createdAt")
-                    .field("type","date")
-                    .endObject()
-                    .endObject()
+                    .startObject().field("dynamic", true)
+                        .startObject("properties")
+                            .startObject("productName").field("type","text").endObject()
+                            .startObject("detail").field("type","text")
+                                .startObject("fields")
+                                    .startObject("keyword").field("type","keyword").endObject()
+                                .endObject()
+                            .endObject()
+                            .startObject("productImg").field("type","text").endObject()
+                            .startObject("stock").field("type","integer").endObject()
+                            .startObject("price").field("type","float").endObject()
+                            .startObject("sales").field("type","integer").endObject()
+                            .startObject("createdAt").field("type","date").endObject()
+                        .endObject()
                     .endObject();
         } catch (IOException e) {
             throw new BsException(ErrorCode.UNKNOWN, "创建商品索引失败");
