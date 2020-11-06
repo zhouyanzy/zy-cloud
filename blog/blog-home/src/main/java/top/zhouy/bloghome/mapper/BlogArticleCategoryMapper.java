@@ -2,6 +2,7 @@ package top.zhouy.bloghome.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 import top.zhouy.bloghome.bean.entity.BlogArticleCategory;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * @author zhouy
  * @since 2020-03-18
  */
+@Component
 public interface BlogArticleCategoryMapper extends BaseMapper<BlogArticleCategory> {
 
     /**

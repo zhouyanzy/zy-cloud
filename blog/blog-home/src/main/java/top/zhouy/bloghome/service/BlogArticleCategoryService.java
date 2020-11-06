@@ -3,6 +3,8 @@ package top.zhouy.bloghome.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import top.zhouy.bloghome.bean.entity.BlogArticleCategory;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,17 @@ import top.zhouy.bloghome.bean.entity.BlogArticleCategory;
  */
 public interface BlogArticleCategoryService extends IService<BlogArticleCategory> {
 
+    /**
+     * 查找分类
+     * @param id
+     * @return
+     */
+    List<BlogArticleCategory> listCategories(Long id);
+
+    /**
+     * 查找标签
+     * @param id
+     * @return
+     */
+    List<BlogArticleCategory> listTags(Long id);
 }

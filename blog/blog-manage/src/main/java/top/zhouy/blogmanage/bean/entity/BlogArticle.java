@@ -3,9 +3,9 @@ package top.zhouy.blogmanage.bean.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 import top.zhouy.blogmanage.bean.status.ArticleStatus;
 
-import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,6 +17,7 @@ import java.util.Date;
  * @author zhouy
  * @since 2020-03-18
  */
+@Data
 public class BlogArticle implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,71 +38,13 @@ public class BlogArticle implements Serializable {
     @TableField(value = "status")
     private ArticleStatus status;
 
-    public Long getId() {
-        return id;
-    }
+    private String desc;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private Long comments;
 
-    public String getTitle() {
-        return title;
-    }
+    private Long likes;
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    private Long views;
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Boolean getArchive() {
-        return archive;
-    }
-
-    public void setArchive(Boolean archive) {
-        this.archive = archive;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public ArticleStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(ArticleStatus status) {
-        this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        return "BlogArticle{" +
-        "id=" + id +
-        ", title=" + title +
-        ", content=" + content +
-        ", archive=" + archive +
-        ", createdAt=" + createdAt +
-        ", updatedAt=" + updatedAt +
-        "}";
-    }
+    private String img;
 }

@@ -4,6 +4,7 @@ import top.zhouy.commonresponse.bean.enums.ErrorCode;
 
 /**
  * 业务逻辑异常
+ * @author zhouy
  */
 public class BsException extends RuntimeException {
 

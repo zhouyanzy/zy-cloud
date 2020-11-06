@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.zhouy.blogmanage.mapper.BlogArticleCategoryMapper">
+<mapper namespace="top.zhouy.bloghome.mapper.BlogArticleCategoryMapper">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="top.zhouy.bloghome.bean.entity.BlogArticleCategory">
@@ -12,4 +12,23 @@
         <result column="updated_at" property="updatedAt" />
     </resultMap>
 
+    <resultMap id="BaseVOResultMap" type="top.zhouy.bloghome.bean.vo.BlogArticleCategoryVO" extends="top.zhouy.bloghome.mapper.BlogArticleCategoryMapper.BaseResultMap">
+        <id column="id" property="id" />
+        <result column="category_name" property="categoryName" />
+        <result column="archive" property="archive" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+
+    <select id="listCategories" resultMap="BaseVOResultMap">
+        SELECT a.*, b.category_name FROM blog_article_category a
+        LEFT JOIN blog_category b ON a.category_id = b.id AND a.archive = 0 and b.archive = 0
+        WHERE a.article_id = #{id} AND b.category_type IN ('0', '1', '2')
+    </select>
+
+    <select id="listTags" resultMap="BaseVOResultMap">
+        SELECT a.*, b.category_name FROM blog_article_category a
+        LEFT JOIN blog_category b ON a.category_id = b.id AND a.archive = 0 and b.archive = 0
+        WHERE a.article_id = #{id} AND b.category_type = '3'
+    </select>
 </mapper>

@@ -60,4 +60,8 @@ public class UserServiceImpl implements org.springframework.security.core.userde
             return userVO;
         }
     }
+
+    public Boolean register(User user) {
+        return userMapper.insert(user) > 0 ? true : false;
+    }
 }
