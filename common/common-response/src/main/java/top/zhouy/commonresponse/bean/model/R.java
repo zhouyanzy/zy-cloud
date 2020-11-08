@@ -3,8 +3,6 @@ package top.zhouy.commonresponse.bean.model;
 
 import top.zhouy.commonresponse.bean.enums.ErrorCode;
 
-import java.io.Serializable;
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -15,7 +13,7 @@ import java.util.HashMap;
 public class R<T> extends HashMap<String, Object>{
 
     public R() {
-        put("timestamp", new Date().getTime());
+        put("timestamp", System.currentTimeMillis());
     }
 
     private static R onSuccess(){
@@ -23,7 +21,7 @@ public class R<T> extends HashMap<String, Object>{
     }
 
     private static R onFail(){
-        return new R().put("code", 500).put("ok", "false");
+        return new R().put("code", 500).put("ok", "false").put("msg", "服务器异常，请稍后再试！");
     }
 
     public static R ok() {

@@ -90,4 +90,9 @@ public class UserVO extends User implements UserDetails {
             }
         }
     }
+
+    @Override
+    public void setId(Long id) {
+        super.setId(id);
+    }
 }

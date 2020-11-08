@@ -18,5 +18,5 @@ public class BaseEntity {
 
     private Date updatedAt;
 
-    private char archive;
+    private String archive;
 }

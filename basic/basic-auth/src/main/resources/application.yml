@@ -83,3 +83,7 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   typeAliasesPackage: top.zhouy.basicauth.bean.entity
   type-enums-package: top.zhouy.basicauth.bean.type
+  global-config:
+    db-config:
+      id-type: auto
+      field-strategy: not_empty

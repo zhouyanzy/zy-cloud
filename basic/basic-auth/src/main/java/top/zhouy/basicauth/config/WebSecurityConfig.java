@@ -49,6 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/init/**",
                         "/webjars/**",
                         "/actuator/**",
+                        "/auth/**",
+                        "/user/**",
                         "/hystrix.stream").permitAll()
                 .anyRequest().authenticated()
                 .and()

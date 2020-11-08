@@ -54,6 +54,7 @@ public class UserServiceImpl implements org.springframework.security.core.userde
             String password = passwordEncoder.encode(user.getPassword());
             UserVO userVO = new UserVO();
             userVO.setName(user.getName());
+            userVO.setId(user.getId());
             userVO.setPhone(user.getAvatar());
             userVO.setAuthorities(authorities);
             userVO.setPassword(password);

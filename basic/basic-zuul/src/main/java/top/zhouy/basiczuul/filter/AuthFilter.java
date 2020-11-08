@@ -69,6 +69,10 @@ public class AuthFilter extends ZuulFilter {
         RequestContext requestContext =  RequestContext.getCurrentContext();
         HttpServletRequest  request = requestContext.getRequest();
         String authorization = request.getHeader("Authorization");
+        if (StringUtils.isNoneBlank(authorization) && ! authorization.startsWith("bearer")) {
+            requestContext.addZuulRequestHeader("Authorization", null);
+            authorization = null;
+        }
         if (StringUtils.isBlank(authorization)) {
             log.info("------游客访问------");
             return null;

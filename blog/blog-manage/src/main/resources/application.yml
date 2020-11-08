@@ -44,9 +44,9 @@ spring:
            login-password: admin
   redis:
     database: 1
-    host: 47.101.151.143
+    host: 47.101.151.43
     port: 6379
-    password:
+    password: zy1217
     lettuce:
       pool:
         max-active: 8
@@ -65,6 +65,10 @@ mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
   typeAliasesPackage: top.zhouy.blogmanage.bean.entity
   type-enums-package: top.zhouy.blogmanage.bean.type
+  global-config:
+    db-config:
+      id-type: auto
+      field-strategy: not_empty
 
 security:
   oauth2:
