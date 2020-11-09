@@ -34,4 +34,20 @@ public interface BlogArticleMapper extends BaseMapper<BlogArticle> {
      * @return
      */
     List<BlogArticleVO> listBlog(@Param("categoryId") Long categoryId, @Param("pageable") Pageable pageable);
+
+    /**
+     * 点赞
+     * @param id
+     * @param amount
+     * @return
+     */
+    int like(@Param("id") Long id, @Param("amount") Integer amount);
+
+    /**
+     * 浏览
+     * @param id
+     * @param amount
+     * @return
+     */
+    int view(@Param("id") Long id, @Param("amount") Integer amount);
 }

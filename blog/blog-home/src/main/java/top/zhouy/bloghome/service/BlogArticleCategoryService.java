@@ -2,6 +2,7 @@ package top.zhouy.bloghome.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import top.zhouy.bloghome.bean.entity.BlogArticleCategory;
+import top.zhouy.bloghome.bean.vo.BlogArticleCategoryVO;
 
 import java.util.List;
 
@@ -20,12 +21,12 @@ public interface BlogArticleCategoryService extends IService<BlogArticleCategory
      * @param id
      * @return
      */
-    List<BlogArticleCategory> listCategories(Long id);
+    List<BlogArticleCategoryVO> listCategories(Long id);
 
     /**
      * 查找标签
      * @param id
      * @return
      */
-    List<BlogArticleCategory> listTags(Long id);
+    List<BlogArticleCategoryVO> listTags(Long id);
 }

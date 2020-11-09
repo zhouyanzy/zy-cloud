@@ -2,7 +2,6 @@ package top.zhouy.bloghome.bean.vo;
 
 import lombok.Data;
 import top.zhouy.bloghome.bean.entity.BlogArticle;
-import top.zhouy.bloghome.bean.entity.BlogArticleCategory;
 
 import java.util.List;
 
@@ -14,8 +13,10 @@ import java.util.List;
 @Data
 public class BlogArticleVO extends BlogArticle {
 
-    private List<BlogArticleCategory> categoryList;
+    private List<BlogArticleCategoryVO> categoryList;
 
-    private List<BlogArticleCategory> tagList;
+    private List<BlogArticleCategoryVO> tagList;
+
+    private List<BlogMessageVO> messageList;
 
 }

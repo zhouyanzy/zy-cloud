@@ -23,6 +23,7 @@
         <if test="categoryId != null and categoryId != ''">
             AND b.category_id = #{categoryId}
         </if>
+        AND a.id > 1
     </select>
 
     <select id="listBlog" resultMap="VOResultMap">
@@ -32,5 +33,18 @@
         <if test="categoryId != null and categoryId != ''">
             AND b.category_id = #{categoryId}
         </if>
+        AND a.id > 1
     </select>
+
+    <update id="like">
+        UPDATE blog_article
+        SET likes = likes + #{amount}
+        WHERE id = #{id}
+    </update>
+
+    <update id="view">
+        UPDATE blog_article
+        SET views = views + #{amount}
+        WHERE id = #{id}
+    </update>
 </mapper>

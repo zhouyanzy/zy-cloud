@@ -55,7 +55,9 @@ public class UserServiceImpl implements org.springframework.security.core.userde
             UserVO userVO = new UserVO();
             userVO.setName(user.getName());
             userVO.setId(user.getId());
-            userVO.setPhone(user.getAvatar());
+            userVO.setPhone(user.getPhone());
+            userVO.setEmail(user.getEmail());
+            userVO.setAvatar(user.getAvatar());
             userVO.setAuthorities(authorities);
             userVO.setPassword(password);
             return userVO;

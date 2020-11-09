@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import top.zhouy.bloghome.bean.entity.BlogArticleCategory;
+import top.zhouy.bloghome.bean.vo.BlogArticleCategoryVO;
 
 import java.util.List;
 
@@ -23,12 +24,12 @@ public interface BlogArticleCategoryMapper extends BaseMapper<BlogArticleCategor
      * @param id
      * @return
      */
-    List<BlogArticleCategory> listCategories(@Param("id") Long id);
+    List<BlogArticleCategoryVO> listCategories(@Param("id") Long id);
 
     /**
      * 查找标签
      * @param id
      * @return
      */
-    List<BlogArticleCategory> listTags(@Param("id") Long id);
+    List<BlogArticleCategoryVO> listTags(@Param("id") Long id);
 }

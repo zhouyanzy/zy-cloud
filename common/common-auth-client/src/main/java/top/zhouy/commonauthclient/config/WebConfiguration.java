@@ -21,7 +21,6 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // 拦截所有请求，通过判断是否有 @LoginRequired 注解 决定是否需要登录
         registry.addInterceptor(userInterceptor()).addPathPatterns("/**");
     }
 

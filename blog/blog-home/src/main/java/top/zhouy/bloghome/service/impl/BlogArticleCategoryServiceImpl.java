@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.zhouy.bloghome.bean.entity.BlogArticleCategory;
+import top.zhouy.bloghome.bean.vo.BlogArticleCategoryVO;
 import top.zhouy.bloghome.mapper.BlogArticleCategoryMapper;
 import top.zhouy.bloghome.service.BlogArticleCategoryService;
 
@@ -23,12 +24,12 @@ public class BlogArticleCategoryServiceImpl extends ServiceImpl<BlogArticleCateg
     private BlogArticleCategoryMapper blogArticleCategoryMapper;
 
     @Override
-    public List<BlogArticleCategory> listCategories(Long id) {
+    public List<BlogArticleCategoryVO> listCategories(Long id) {
         return blogArticleCategoryMapper.listCategories(id);
     }
 
     @Override
-    public List<BlogArticleCategory> listTags(Long id) {
+    public List<BlogArticleCategoryVO> listTags(Long id) {
         return blogArticleCategoryMapper.listTags(id);
     }
 }

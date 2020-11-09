@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.zhouy.bloghome.mapper.BlogMessageMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.zhouy.bloghome.bean.entity.BlogMessage">
+        <id column="id" property="id" />
+        <result column="archive" property="archive" />
+        <result column="created_at" property="createdAt" />
+        <result column="updated_at" property="updatedAt" />
+    </resultMap>
+    
+    <resultMap id="VoResultMap" type="top.zhouy.bloghome.bean.vo.BlogMessageVO" extends="BaseResultMap">
+
+    </resultMap>
+
+    <select id="listComments" resultMap="VoResultMap">
+        SELECT a.* FROM blog_message a
+        WHERE type = #{type}
+        AND type_id = #{typeId}
+    </select>
+
+    <update id="like" >
+        UPDATE blog_message
+        SET likes = likes + #{amount}
+        WHERE id = #{id}
+    </update>
+</mapper>

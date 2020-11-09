@@ -7,14 +7,20 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.zhouy.bloghome.bean.entity.BlogCategory;
 import top.zhouy.bloghome.bean.type.CategoryType;
+import top.zhouy.bloghome.bean.type.EventType;
+import top.zhouy.bloghome.bean.type.MessageType;
 import top.zhouy.bloghome.bean.vo.BlogArticleVO;
+import top.zhouy.bloghome.event.BlogEvent;
+import top.zhouy.bloghome.event.publisher.EventPublisher;
 import top.zhouy.bloghome.service.BlogArticleCategoryService;
 import top.zhouy.bloghome.service.BlogArticleService;
 import top.zhouy.bloghome.service.BlogCategoryService;
+import top.zhouy.bloghome.service.BlogMessageService;
 import top.zhouy.commonresponse.bean.model.R;
 import top.zhouy.util.service.DozerService;
 import top.zhouy.util.utils.ElasticSearchUtils;
@@ -45,6 +51,9 @@ public class BlogArticleController {
     @Autowired
     private BlogArticleCategoryService blogArticleCategoryService;
 
+    @Autowired
+    private BlogMessageService blogMessageService;
+
     /**
      * 查找博客
      * @return
@@ -68,6 +77,8 @@ public class BlogArticleController {
         BlogArticleVO blogArticleVO = dozerService.convert(blogArticleService.getById(id), BlogArticleVO.class);
         blogArticleVO.setCategoryList(blogArticleCategoryService.listCategories(blogArticleVO.getId()));
         blogArticleVO.setTagList(blogArticleCategoryService.listTags(blogArticleVO.getId()));
+        blogArticleVO.setMessageList(blogMessageService.listComments(MessageType.BLOG, blogArticleVO.getId()));
+        EventPublisher.publishEvent(new BlogEvent(this, EventType.VIEW, id, null));
         return R.ok().put("data", blogArticleVO);
     }
 
@@ -91,9 +102,10 @@ public class BlogArticleController {
      * 喜爱
      * @return
      */
-    @GetMapping("/likeBlog")
+    @PostMapping("/likeBlog")
     @ApiOperation(value = "喜爱")
     public R likeBlog(Long id){
+        EventPublisher.publishEvent(new BlogEvent(this, EventType.LIKE, id, null));
         return R.ok();
     }
 
