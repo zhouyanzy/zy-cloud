@@ -65,7 +65,7 @@ public class Swagger2Configuration {
         return new ApiInfoBuilder()
                 .title("zy-分布式系统")
                 .description("系统接口文档说明")
-                .termsOfServiceUrl("http://zhouy.top:8780")
+                .termsOfServiceUrl("http://www.zhouy.top:8780")
                 .contact(new Contact("zhouy", "", "2392788994@qq.com"))
                 .version("1.0")
                 .build();

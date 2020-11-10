@@ -8,7 +8,7 @@ eureka:
   client:
     registryFetchIntervalSeconds: 5
     serviceUrl:
-      defaultZone: http://zhouy.top:8760/eureka/
+      defaultZone: http://www.zhouy.top:8760/eureka/
     healthcheck:
       enabled: true
   instance:

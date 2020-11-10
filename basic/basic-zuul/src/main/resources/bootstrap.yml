@@ -3,7 +3,7 @@ spring:
     name: basic-zuul
   cloud:
     config:
-      uri: http://zhouy.top:8780
+      uri: http://www.zhouy.top:8780
       fail-fast: true
   profiles:
     active: dev
@@ -29,10 +29,10 @@ management:
 security:
   oauth2:
     client:
-      access-token-uri: http://zhouy.top:8790/oauth/token
-      user-authorization-uri: http://zhouy.top:8790/oauth/authorize
+      access-token-uri: http://www.zhouy.top:8790/oauth/token
+      user-authorization-uri: http://www.zhouy.top:8790/oauth/authorize
       client-id: zuul
       client-secret: zuul
     resource:
       jwt:
-        key-uri: http://zhouy.top:8790/oauth/token_key
+        key-uri: http://www.zhouy.top:8790/oauth/token_key

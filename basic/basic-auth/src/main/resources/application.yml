@@ -61,7 +61,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://zhouy.top:8760/eureka/
+      defaultZone: http://www.zhouy.top:8760/eureka/
 
 security:
   basic:

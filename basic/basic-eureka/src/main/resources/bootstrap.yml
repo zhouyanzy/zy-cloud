@@ -3,7 +3,7 @@ spring:
     name: basic-eureka
   cloud:
     config:
-      uri: http://zhouy.top:8780
+      uri: http://www.zhouy.top:8780
       fail-fast: true
   profiles:
     active: dev
