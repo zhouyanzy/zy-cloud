@@ -30,7 +30,7 @@ public class Swagger2Configuration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("top.zhouy.bloghome.controller"))
+                .apis(RequestHandlerSelectors.basePackage("top.zhouy"))
                 .paths(PathSelectors.any())
                 .build()//整合oauth2
                 .securitySchemes(Collections.singletonList(apiKey()))

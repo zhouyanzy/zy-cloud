@@ -8,12 +8,14 @@ eureka:
   client:
     registryFetchIntervalSeconds: 5
     serviceUrl:
-      defaultZone: http://www.zhouy.top:8760/eureka/
+      defaultZone: http://42.192.93.125:8760/eureka/
     healthcheck:
       enabled: true
   instance:
     leaseRenewalIntervalInSeconds: 10
     health-check-url-path: /actuator/health
+    prefer-ip-address: true
+    ip-address: 42.192.93.125
 
 management:
   endpoints:

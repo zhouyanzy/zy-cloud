@@ -3,7 +3,7 @@ spring:
     name: basic-eureka
   cloud:
     config:
-      uri: http://www.zhouy.top:8780
+      uri: http://42.192.93.125:8780
       fail-fast: true
   profiles:
     active: dev
@@ -16,3 +16,7 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 42.192.93.125

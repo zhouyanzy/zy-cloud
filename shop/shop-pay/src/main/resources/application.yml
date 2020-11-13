@@ -46,7 +46,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://www.zhouy.top:8760/eureka/
+      defaultZone: http://42.192.93.125:8760/eureka/
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
@@ -55,4 +55,4 @@ mybatis-plus:
 
 tx-lcn:
   client:
-    manager-address: www.zhouy.top:9020
+    manager-address: 42.192.93.125:9020

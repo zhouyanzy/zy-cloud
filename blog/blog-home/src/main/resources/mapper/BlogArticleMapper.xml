@@ -17,7 +17,7 @@
     </resultMap>
 
     <select id="countBlog" resultType="long">
-        SELECT count(1) FROM blog_article a
+        SELECT count(*) FROM blog_article a
         LEFT JOIN blog_article_category b ON a.id = b.article_id AND b.archive = 0
         WHERE a.archive = 0
         <if test="categoryId != null and categoryId != ''">
@@ -27,13 +27,17 @@
     </select>
 
     <select id="listBlog" resultMap="VOResultMap">
-        SELECT a.* FROM blog_article a
+        SELECT a.id, a.title, a.description, a.views, a.comments, a.likes, a.created_at, a.img FROM blog_article a
         LEFT JOIN blog_article_category b ON a.id = b.article_id AND b.archive = 0
         WHERE a.archive = 0
         <if test="categoryId != null and categoryId != ''">
             AND b.category_id = #{categoryId}
         </if>
         AND a.id > 1
+        ORDER BY a.id DESC
+        <if test="pageable != null">
+            LIMIT #{pageable.offset}, #{pageable.pageSize}
+        </if>
     </select>
 
     <update id="like">

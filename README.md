@@ -47,12 +47,12 @@
  
  
 ## 项目地址
- - 注册中心：http://www.zhouy.top:8760
- - hystrix监控：http://www.zhouy.top:8800/hystrix
+ - 注册中心：http://42.192.93.125:8760
+ - hystrix监控：http://42.192.93.125:8800/hystrix
  - swagger文档：http://www.zhouy.top:8770/swagger-ui.html
- - lcn后台管理：http://www.zhouy.top:9010/admin/index.html#/login，密码：codingapi
- - xxl后台管理：http://www.zhouy.top:9030/xxl-job-admin，账号密码：admin/123456
- - spring-boot admin监控：http://www.zhouy.top:9050/login，账号密码：admin/123456
+ - lcn后台管理：http://42.192.93.125:9010/admin/index.html#/login，密码：codingapi
+ - xxl后台管理：http://42.192.93.125:9030/xxl-job-admin，账号密码：admin/123456
+ - spring-boot admin监控：http://42.192.93.125:9050/login，账号密码：admin/123456
 
 ## Host配置
  - 127.0.0.1 www.zhouy.top

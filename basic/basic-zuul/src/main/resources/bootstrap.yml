@@ -1,9 +1,17 @@
+server:
+  ssl:
+    key-store: classpath:server.keystore
+    key-alias: tomcat
+    enabled: true
+    key-store-password: 123456
+    key-store-type: JKS
+
 spring:
   application:
     name: basic-zuul
   cloud:
     config:
-      uri: http://www.zhouy.top:8780
+      uri: http://42.192.93.125:8780
       fail-fast: true
   profiles:
     active: dev
@@ -26,13 +34,18 @@ management:
       exposure:
         include: "*"
 
+eureka:
+  instance:
+    prefer-ip-address: true
+    ip-address: 47.101.151.43
+
 security:
   oauth2:
     client:
-      access-token-uri: http://www.zhouy.top:8790/oauth/token
-      user-authorization-uri: http://www.zhouy.top:8790/oauth/authorize
+      access-token-uri: http://42.192.93.125:8790/oauth/token
+      user-authorization-uri: http://42.192.93.125:8790/oauth/authorize
       client-id: zuul
       client-secret: zuul
     resource:
       jwt:
-        key-uri: http://www.zhouy.top:8790/oauth/token_key
+        key-uri: http://42.192.93.125:8790/oauth/token_key

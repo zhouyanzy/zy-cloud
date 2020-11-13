@@ -59,7 +59,10 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://www.zhouy.top:8760/eureka/
+      defaultZone: http://42.192.93.125:8760/eureka/
+  instance:
+    prefer-ip-address: true
+    ip-address: 42.192.93.125
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
@@ -76,10 +79,10 @@ security:
       id: ${spring.application.name}
       client-id: blog
       client-secret: blog
-      access-token-uri: http://www.zhouy.top:8790/oauth/token
-      user-authorization-uri: http://www.zhouy.top:8790/oauth/authorize
+      access-token-uri: http://42.192.93.125:8790/oauth/token
+      user-authorization-uri: http://42.192.93.125:8790/oauth/authorize
       authentication-scheme: header
     resource:
       jwt:
-        key-uri: http://www.zhouy.top:8790/oauth/token_key
-      token-info-uri: http://www.zhouy.top:8790/oauth/check_token #检查令牌
+        key-uri: http://42.192.93.125:8790/oauth/token_key
+      token-info-uri: http://42.192.93.125:8790/oauth/check_token #检查令牌

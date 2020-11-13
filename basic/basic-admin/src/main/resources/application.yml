@@ -13,7 +13,7 @@ eureka:
   client:
     registryFetchIntervalSeconds: 5
     serviceUrl:
-      defaultZone: http://www.zhouy.top:8760/eureka/
+      defaultZone: http://42.192.93.125:8760/eureka/
     healthcheck:
       enabled: true
   instance:
@@ -22,6 +22,8 @@ eureka:
     metadata-map:
       user.name: ${spring.security.user.name}
       user.password: ${spring.security.user.password}
+    prefer-ip-address: true
+    ip-address: 42.192.93.125
 
 management:
   endpoints:
