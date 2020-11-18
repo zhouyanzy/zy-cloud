@@ -21,12 +21,13 @@ public class UserOauth2ExceptionSerializer extends StdSerializer<UserOauth2Excep
     @Override
     public void serialize(UserOauth2Exception e, JsonGenerator generator, SerializerProvider serializerProvider) throws IOException {
         generator.writeStartObject();
-        generator.writeObjectField("status", e.getHttpErrorCode());
+        generator.writeObjectField("code", e.getHttpErrorCode());
         String message = e.getMessage();
         if (message != null) {
             message = HtmlUtils.htmlEscape(message);
         }
-        generator.writeStringField("message", message);
+        generator.writeStringField("msg", message);
+        generator.writeNumberField("timestamp", System.currentTimeMillis());
         if (e.getAdditionalInformation()!=null) {
             for (Map.Entry<String, String> entry : e.getAdditionalInformation().entrySet()) {
                 String key = entry.getKey();

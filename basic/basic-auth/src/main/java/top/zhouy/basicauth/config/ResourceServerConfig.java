@@ -48,4 +48,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .anyRequest().authenticated()
             .and().httpBasic();
     }
+
+
 }
