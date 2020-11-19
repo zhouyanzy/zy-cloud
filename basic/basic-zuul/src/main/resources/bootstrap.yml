@@ -10,17 +10,51 @@ spring:
   application:
     name: basic-zuul
   cloud:
+    loadbalancer:
+      retry:
+        enabled: true
     config:
       uri: http://42.192.93.125:8780
       fail-fast: true
   profiles:
     active: dev
+  redis:
+    database: 1
+    host: 47.101.151.43
+    port: 6379
+    password: zy1217
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
 
 zuul:
   host:
-    connect-timeout-millis: 5000
-    socket-timeout-millis: 2000
+    connect-timeout-millis: 20000
+    socket-timeout-millis: 20000
   sensitive-headers: Cookie, Set-Cookie
+  # 配置限流
+  ratelimit:
+    enabled: true
+    # 对应存储类型(用来统计存储统计信息)
+    repository: redis
+    # 配置路由的策略
+    policy-list:
+      demo:
+        # 每秒允许多少个请求
+        - limit: 2
+          # 刷新时间(单位秒)
+          refresh-interval: 1
+          # 根据什么统计
+          type:
+            - url
+  ribbon:
+    eager-load:
+      enabled: true
+  retryable: true
+
 
 management:
   endpoint:
@@ -49,3 +83,24 @@ security:
     resource:
       jwt:
         key-uri: http://42.192.93.125:8790/oauth/token_key
+ribbon:
+  ConnectTimeOut: 3000
+  ReadTimeOut: 15000
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: true
+  eager-load:
+    enabled: true
+
+hystrix:
+  command:
+    default:  #default全局有效，service id指定应用有效
+      execution:
+        timeout:
+          #如果enabled设置为false，则请求超时交给ribbon控制,为true,则超时作为熔断根据
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000 #断路器超时时间，默认1000ms
+feign.hystrix.enabled: true
+
