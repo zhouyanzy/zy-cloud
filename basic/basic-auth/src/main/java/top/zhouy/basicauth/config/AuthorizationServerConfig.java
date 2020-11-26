@@ -1,9 +1,11 @@
 package top.zhouy.basicauth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -15,8 +17,11 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import top.zhouy.basicauth.exception.CustomAuthenticationEntryPoint;
+import top.zhouy.basicauth.exception.CustomClientCredentialsTokenEndpointFilter;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +33,9 @@ import java.util.List;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+
+    @Autowired
+    private DataSource dataSource;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -50,6 +58,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private WebResponseExceptionTranslator webResponseExceptionTranslator;
 
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
@@ -69,31 +80,25 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                .withClient("zuul")
-                .secret(passwordEncoder.encode("zuul"))
-                .authorizedGrantTypes("refresh_token", "authorization_code", "password", "access_token", "check_token")
-                .accessTokenValiditySeconds(3600)
-                .scopes("all")
-                .and()
-                .withClient("shop")
-                .secret(passwordEncoder.encode("shop"))
-                .authorizedGrantTypes("refresh_token", "authorization_code", "password", "access_token", "check_token")
-                .accessTokenValiditySeconds(3600)
-                .scopes("all")
-                .and()
-                .withClient("blog")
-                .secret(passwordEncoder.encode("blog"))
-                .authorizedGrantTypes("refresh_token", "authorization_code", "password", "access_token", "check_token")
-                .accessTokenValiditySeconds(3600)
-                .scopes("all");
+        clients.jdbc(dataSource);
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        // 支持将client参数放在header或body中
-        security.allowFormAuthenticationForClients();
-        security.checkTokenAccess("isAuthenticated()");
-        security.tokenKeyAccess("permitAll()");
+        CustomClientCredentialsTokenEndpointFilter endpointFilter = new CustomClientCredentialsTokenEndpointFilter(security);
+        endpointFilter.afterPropertiesSet();
+        endpointFilter.setAuthenticationEntryPoint(customAuthenticationEntryPoint);
+        security.addTokenEndpointAuthenticationFilter(endpointFilter);
+        // 支持将client参数放在header或body中 security.allowFormAuthenticationForClients()
+        security.checkTokenAccess("isAuthenticated()")
+                .tokenKeyAccess("permitAll()")
+                .passwordEncoder(passwordEncoder);
+    }
+
+    public static void main(String[] args) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String encode = bCryptPasswordEncoder.encode("blog");
+        // 数据库存的密码就是这个 encode
+        System.out.print(encode);
     }
 }

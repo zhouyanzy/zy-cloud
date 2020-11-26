@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import top.zhouy.commonresponse.bean.model.R;
 
 /**
- * 全局异常处理
+ * @description: OAuth2Exception异常处理
+ * @author: zhouy
+ * @create: 2020-11-05 11:58:00
  */
 @RestControllerAdvice
 class OauthExceptionHandler {

@@ -1,22 +1,16 @@
 package top.zhouy.basiczuul.config;
 
-/**
- * @description:
- * @author: zhouy
- * @create: 2020-11-18 17:41:00
- */
-
+import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.config.RateLimitKeyGenerator;
 import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.config.RateLimitUtils;
 import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.config.properties.RateLimitProperties;
-import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.support.DefaultRateLimitKeyGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import com.marcosbarbero.cloud.autoconfigure.zuul.ratelimit.config.properties.RateLimitType;
 import org.springframework.cloud.netflix.zuul.filters.Route;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 /**
  * @description: 自定义限流
@@ -24,19 +18,15 @@ import javax.servlet.http.HttpServletRequest;
  * @create: 2020-11-18 15:54:00
  */
 @Component
-@AutoConfigureAfter()
-public class RateLimitKeyGenerator extends DefaultRateLimitKeyGenerator {
+public class KeyGenerator implements RateLimitKeyGenerator {
 
-    @Autowired
-    private RateLimitProperties properties;
+    private final RateLimitProperties properties;
 
-    @Autowired
-    private RateLimitUtils rateLimitUtils;
+    private final RateLimitUtils rateLimitUtils;
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
-
-    public RateLimitKeyGenerator(RateLimitProperties properties, RateLimitUtils rateLimitUtils) {
-        super(properties, rateLimitUtils);
+    public KeyGenerator(RateLimitProperties properties, RateLimitUtils rateLimitUtils) {
+        this.properties = properties;
+        this.rateLimitUtils = rateLimitUtils;
     }
 
     /**
@@ -49,9 +39,41 @@ public class RateLimitKeyGenerator extends DefaultRateLimitKeyGenerator {
      */
     @Override
     public String key(HttpServletRequest request, Route route, RateLimitProperties.Policy policy) {
-        // 对请求参数中相同的 id 值进行限流
-        log.info(super.key(request, route, policy) + ":" +  getIPAddress(request));
-        return super.key(request, route, policy) + ":" +  getIPAddress(request);
+
+        final List<RateLimitType> types = policy.getType().stream().map(RateLimitProperties.Policy.MatchType::getType).collect(Collectors.toList());
+        //增加的matchers判断
+        final List<String> matchers = policy.getType().stream().map(RateLimitProperties.Policy.MatchType::getMatcher).collect(Collectors.toList());
+
+        final StringJoiner joiner = new StringJoiner(":");
+        joiner.add(properties.getKeyPrefix());
+        if (route != null) {
+            joiner.add(route.getId());
+        }
+        if (!types.isEmpty()) {
+            if (types.contains(RateLimitType.URL) && route != null) {
+                joiner.add(route.getPath());
+            }
+            if (types.contains(RateLimitType.ORIGIN)) {
+                joiner.add(rateLimitUtils.getRemoteAddress(request));
+            }
+            if (types.contains(RateLimitType.USER)) {
+                joiner.add(rateLimitUtils.getUser(request));
+            }
+        }
+        // 增加的matchers判断
+        if (!matchers.isEmpty()) {
+            // 判断matchers里是否包含当前访问的url，如果包含，则追加当前的path
+            if (matchers.contains(route.getPath()) && route != null) {
+                joiner.add(route.getPath());
+            }
+            if (matchers.contains(getIPAddress(request))) {
+                joiner.add(getIPAddress(request));
+            }
+            if (matchers.contains(rateLimitUtils.getUser(request))) {
+                joiner.add(rateLimitUtils.getUser(request));
+            }
+        }
+        return joiner.toString();
     }
 
     /**

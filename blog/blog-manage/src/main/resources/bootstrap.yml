@@ -1,8 +1,8 @@
 server:
-  port: 8820
+  port: 8810
 spring:
   application:
-     name: blog-home
+     name: blog-manage
   datasource:
      url: jdbc:mysql://47.101.151.43:3306/dbblog?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
      username: zy
@@ -54,20 +54,30 @@ spring:
         max-idle: 8
         min-idle: 0
   main:
-    allow-bean-definition-overriding: true
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://42.192.93.125:8760/eureka/
-  instance:
-    prefer-ip-address: true
-    ip-address: 42.192.93.125
+      allow-bean-definition-overriding: true
+  cloud:
+    nacos:
+      discovery:
+        server-addr: www.zhouy.top:8848
+        # 指定注册ip
+        ip: 42.192.93.125
+        port: ${server.port}
+      config:
+        server-addr: www.zhouy.top:8848
+        prefix: blog-manage
+        namespace: zy
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://42.192.93.125:8760/eureka/
+#  instance:
+#    prefer-ip-address: true
+#    ip-address: 42.192.93.125
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
-  typeAliasesPackage: top.zhouy.bloghome.bean.entity
-  type-enums-package: top.zhouy.bloghome.bean.type
+  typeAliasesPackage: top.zhouy.blogmanage.bean.entity
+  type-enums-package: top.zhouy.blogmanage.bean.type
   global-config:
     db-config:
       id-type: auto

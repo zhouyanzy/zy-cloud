@@ -1,5 +1,6 @@
 package top.zhouy.commonprovider.provider;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -38,16 +39,19 @@ public interface AuthProvider {
 
 
     @Component
+    @Slf4j
     class AuthProviderFallback implements AuthProvider {
 
         @Override
         public R<Boolean> auth(String authentication, String url, String method) {
-            return R.fail();
+            log.error("查询授权信息{{}}出错，url:{{}}，method:{{}}", authentication, url, method);
+            return R.okData(false);
         }
 
         @Override
         public R<String> getToken(String authorization, String jwt) {
-            return R.fail();
+            log.error("token解析失败，authorization:{{}}，jwt:{{}}", authorization, jwt);
+            return R.okData(null);
         }
     }
 

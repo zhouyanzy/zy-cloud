@@ -1,10 +1,10 @@
 server:
-  port: 8810
+  port: 8950
 spring:
   application:
-     name: blog-manage
+     name: shop-talk
   datasource:
-     url: jdbc:mysql://47.101.151.43:3306/dbblog?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
+     url: jdbc:mysql://47.101.151.43:3306/shop-talk?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
      username: zy
      password: 123456
      driver-class-name: com.mysql.jdbc.Driver
@@ -42,47 +42,19 @@ spring:
            reset-enable: true
            login-username: admin
            login-password: admin
-  redis:
-    database: 1
-    host: 47.101.151.43
-    port: 6379
-    password: zy1217
-    lettuce:
-      pool:
-        max-active: 8
-        max-wait: -1ms
-        max-idle: 8
-        min-idle: 0
-  main:
-      allow-bean-definition-overriding: true
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://42.192.93.125:8760/eureka/
-  instance:
-    prefer-ip-address: true
-    ip-address: 42.192.93.125
+  cloud:
+    nacos:
+      discovery:
+        server-addr: www.zhouy.top:8848
+        # 指定注册ip
+        ip: 42.192.93.125
+        port: ${server.port}
+      config:
+        server-addr: www.zhouy.top:8848
+        prefix: shop-talk
+        namespace: zy
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
-  typeAliasesPackage: top.zhouy.blogmanage.bean.entity
-  type-enums-package: top.zhouy.blogmanage.bean.type
-  global-config:
-    db-config:
-      id-type: auto
-      field-strategy: not_empty
-
-security:
-  oauth2:
-    client:
-      id: ${spring.application.name}
-      client-id: blog
-      client-secret: blog
-      access-token-uri: http://42.192.93.125:8790/oauth/token
-      user-authorization-uri: http://42.192.93.125:8790/oauth/authorize
-      authentication-scheme: header
-    resource:
-      jwt:
-        key-uri: http://42.192.93.125:8790/oauth/token_key
-      token-info-uri: http://42.192.93.125:8790/oauth/check_token #检查令牌
+  typeAliasesPackage: top.zhouy.shoptalk.bean.entity
+  type-enums-package: top.zhouy.shoptalk.bean.type

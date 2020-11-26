@@ -55,12 +55,17 @@ spring:
         show: true
   main:
     allow-bean-definition-overriding: true
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://42.192.93.125:8760/eureka/
-
+  cloud:
+    nacos:
+      discovery:
+        server-addr: www.zhouy.top:8848
+        # 指定注册ip
+        ip: 42.192.93.125
+        port: ${server.port}
+      config:
+        server-addr: www.zhouy.top:8848
+        prefix: shop-order
+        namespace: zy
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml

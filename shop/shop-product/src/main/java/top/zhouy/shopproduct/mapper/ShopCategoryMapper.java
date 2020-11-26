@@ -1,5 +1,6 @@
 package top.zhouy.shopproduct.mapper;
 
+import org.springframework.stereotype.Component;
 import top.zhouy.shopproduct.bean.entity.ShopCategory;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author zhouYan
  * @since 2020-04-09
  */
+@Component
 public interface ShopCategoryMapper extends BaseMapper<ShopCategory> {
 
 }

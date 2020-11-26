@@ -1,10 +1,37 @@
 server:
-  port: 8940
+  port: 8790
 spring:
   application:
-     name: shop-pay
+    name: basic-auth
+  security:
+    oauth2:
+      jwt:
+        signingKey: zy
+  cloud:
+    nacos:
+      discovery:
+        server-addr: www.zhouy.top:8848
+        enabled: true
+        # 指定注册ip
+        ip: 42.192.93.125
+        port: ${server.port}
+      config:
+        server-addr: www.zhouy.top:8848
+        namespace: zy
+        prefix: auth
+  redis:
+    database: 1
+    host: 47.101.151.43
+    port: 6379
+    password: zy1217
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 0
   datasource:
-     url: jdbc:mysql://47.101.151.43:3306/shop-pay?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
+     url: jdbc:mysql://47.101.151.43:3306/auth?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
      username: zy
      password: 123456
      driver-class-name: com.mysql.jdbc.Driver
@@ -43,16 +70,27 @@ spring:
            login-username: admin
            login-password: admin
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://42.192.93.125:8760/eureka/
+security:
+  basic:
+    enabled: true
+
+management:
+  endpoint:
+    hystrix:
+      stream:
+        enabled: true
+    health:
+      show-details: ALWAYS
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
-  typeAliasesPackage: top.zhouy.shoppay.bean.entity
-  type-enums-package: top.zhouy.shoppay.bean.type
-
-tx-lcn:
-  client:
-    manager-address: 42.192.93.125:9020
+  typeAliasesPackage: top.zhouy.basicauth.bean.entity
+  type-enums-package: top.zhouy.basicauth.bean.type
+  global-config:
+    db-config:
+      id-type: auto
+      field-strategy: not_empty

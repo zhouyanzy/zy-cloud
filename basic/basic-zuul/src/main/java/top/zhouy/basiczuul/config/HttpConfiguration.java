@@ -20,9 +20,9 @@ public class HttpConfiguration {
     public Connector connector(){
         Connector connector=new Connector("org.apache.coyote.http11.Http11NioProtocol");
         connector.setScheme("http");
-        connector.setPort(8771);
+        connector.setPort(8087);
         connector.setSecure(false);
-        connector.setRedirectPort(8770);
+        connector.setRedirectPort(8088);
         return connector;
     }
 

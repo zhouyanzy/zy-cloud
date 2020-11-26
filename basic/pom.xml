@@ -23,6 +23,7 @@
 		<module>basic-hystrix-dashboard</module>
 		<!--<module>basic-xxl-executor</module>-->
 		<module>basic-admin</module>
+		<module>basic-gateway</module>
 	</modules>
 
 </project>

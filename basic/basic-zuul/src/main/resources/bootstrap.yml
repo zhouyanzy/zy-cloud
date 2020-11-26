@@ -42,7 +42,7 @@ zuul:
     repository: redis
     # 配置路由的策略
     policy-list:
-      demo:
+      api-basic-auth:
         # 每秒允许多少个请求
         - limit: 2
           # 刷新时间(单位秒)
@@ -50,6 +50,12 @@ zuul:
           # 根据什么统计
           type:
             - url
+    default-policy-list:
+      - limit: 2
+        quota: 2
+        refresh-interval: 1
+        type:
+          - url
   ribbon:
     eager-load:
       enabled: true

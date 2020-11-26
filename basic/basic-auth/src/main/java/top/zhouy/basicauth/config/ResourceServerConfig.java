@@ -1,11 +1,14 @@
 package top.zhouy.basicauth.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import top.zhouy.basicauth.exception.AuthExceptionEntryPoint;
+import top.zhouy.basicauth.exception.CustomAccessDeniedHandler;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -22,11 +25,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Resource( name = "jwtTokenStore")
     private TokenStore jwtTokenStore;
 
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Override
     public void configure(ResourceServerSecurityConfigurer resourceServerSecurityConfigurer) {
         resourceServerSecurityConfigurer
                 .tokenStore(jwtTokenStore)
                 .resourceId("auth");
+        resourceServerSecurityConfigurer.authenticationEntryPoint(new AuthExceptionEntryPoint())
+                .accessDeniedHandler(customAccessDeniedHandler);
     }
 
     @Override

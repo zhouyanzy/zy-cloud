@@ -1,15 +1,7 @@
 package top.zhouy.shopproduct.service;
 
-import cn.hutool.Hutool;
-import com.alibaba.druid.util.H2Utils;
-import com.netflix.discovery.converters.Auto;
-import com.rabbitmq.client.AMQP;
+
 import com.rabbitmq.client.Channel;
-import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.Exchange;
-import org.springframework.amqp.rabbit.annotation.Queue;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +12,8 @@ import top.zhouy.commonresponse.bean.enums.ErrorCode;
 import top.zhouy.commonresponse.bean.vo.QueueProductSalesVO;
 import top.zhouy.commonresponse.bean.vo.QueueProductStockVO;
 import top.zhouy.commonresponse.exception.BsException;
-import top.zhouy.shopproduct.bean.entity.ShopProduct;
-import top.zhouy.shopproduct.bean.entity.ShopSku;
 import top.zhouy.shopproduct.mapper.ShopProductMapper;
 import top.zhouy.shopproduct.mapper.ShopSkuMapper;
-
-import java.io.IOException;
 
 import static top.zhouy.commonresponse.bean.constant.SysConstants.QUEUE_PRODUCT_SALES;
 import static top.zhouy.commonresponse.bean.constant.SysConstants.QUEUE_PRODUCT_STOCK;

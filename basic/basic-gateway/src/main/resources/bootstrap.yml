@@ -1,0 +1,85 @@
+server:
+  port: 8770
+  ssl:
+    enabled: true
+    key-store: classpath:server.keystore
+    key-alias: tomcat
+    key-store-password: 123456
+    key-store-type: JKS
+
+spring:
+  application:
+    name: basic-gateway
+  profiles:
+    active: dev
+  cloud:
+    sentinel:
+      filter:
+        enabled: false
+    nacos:
+      discovery:
+        server-addr: www.zhouy.top:8848
+        # 指定注册ip
+        ip: 47.101.151.43
+        port: ${server.port}
+      config:
+        server-addr: www.zhouy.top:8848
+        prefix: gateway
+        namespace: zy
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      # 路由规则
+      routes:
+        - id: basic-auth # 路由 ID，唯一
+          uri: lb://blog-home # 目标 URI，lb:// 根据服务名称从注册中心获取服务请求地址
+          predicates: # 断言（判断条件）
+            # 匹配对应 URI 的请求，将匹配到的请求追加在目标 URI 之后
+            - Path=/api-blog-home/**
+  #允许覆盖已经存在的同名bean
+  main:
+    allow-bean-definition-overriding: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
+
+security:
+  oauth2:
+    client:
+      access-token-uri: http://42.192.93.125:8790/oauth/token
+      user-authorization-uri: http://42.192.93.125:8790/oauth/authorize
+      client-id: zuul
+      client-secret: zuul
+    resource:
+      jwt:
+        key-uri: http://42.192.93.125:8790/oauth/token_key
+ribbon:
+  ConnectTimeOut: 3000
+  ReadTimeOut: 15000
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 1
+  OkToRetryOnAllOperations: true
+  eager-load:
+    enabled: true
+
+hystrix:
+  command:
+    default:  #default全局有效，service id指定应用有效
+      execution:
+        timeout:
+          #如果enabled设置为false，则请求超时交给ribbon控制,为true,则超时作为熔断根据
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000 #断路器超时时间，默认1000ms
+feign:
+  hystrix:
+    enabled: true
