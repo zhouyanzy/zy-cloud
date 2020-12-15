@@ -21,25 +21,7 @@ public interface ShopOrderService extends IService<ShopOrder> {
      * @param payType
      * @return
      */
-    Boolean onPayTXC(String orderNo, String payNo, PayType payType);
-
-    /**
-     * 订单支付
-     * @param orderNo
-     * @param payNo
-     * @param payType
-     * @return
-     */
-    Boolean onPayTCC(String orderNo, String payNo, PayType payType);
-
-    /**
-     * 订单支付
-     * @param orderNo
-     * @param payNo
-     * @param payType
-     * @return
-     */
-    Boolean onPayLCN(String orderNo, String payNo, PayType payType);
+    Boolean onPay(String orderNo, String payNo, PayType payType);
 
     /**
      * 生成订单

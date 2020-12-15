@@ -1,15 +1,18 @@
 package top.zhouy.shoporder.controller;
 
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import top.zhouy.commonresponse.bean.enums.ErrorCode;
 import top.zhouy.commonresponse.bean.model.R;
 import top.zhouy.shoporder.bean.entity.ShopOrder;
 import top.zhouy.shoporder.bean.type.PayType;
@@ -26,15 +29,28 @@ import top.zhouy.shoporder.service.ShopOrderService;
 @RestController
 @RequestMapping("/shopOrder")
 @Api("订单接口")
+@Slf4j
 public class ShopOrderController {
 
     @Autowired
     private ShopOrderService shopOrderService;
 
     @ApiOperation("生成订单")
+    @SentinelResource(value = "", blockHandler = "createOrderBlockHandler")
     @PostMapping("/createOrder")
     public R createOrder(ShopOrder shopOrder){
         return R.okData(shopOrderService.createOrder(shopOrder));
+    }
+
+    /**
+     * 限流
+     * @param shopOrder
+     * @param e
+     * @return
+     */
+    public R createOrderBlockHandler(ShopOrder shopOrder, BlockException e){
+        log.error("生成订单被限流" + shopOrder);
+        return R.fail(ErrorCode.SENTINEL.getCode(), e.getMessage());
     }
 
     /**
@@ -50,19 +66,7 @@ public class ShopOrderController {
                    @ApiParam("支付单号") @RequestParam(value = "payNo") String payNo,
                    @ApiParam("支付方式") @RequestParam(value = "payType") PayType payType,
                    @ApiParam("分布式事务方式，'TCC'，'LCN'，'TXC'") @RequestParam(value = "lcnType") String lcnType){
-        Boolean success = false;
-        switch (lcnType) {
-            case "TXC" :
-                success = shopOrderService.onPayTXC(orderNo, payNo, payType);
-                break;
-            case "TCC" :
-                success = shopOrderService.onPayTCC(orderNo, payNo, payType);
-                break;
-            default:
-                success = shopOrderService.onPayLCN(orderNo, payNo, payType);
-                break;
-        }
-        return R.okData(success);
+        return R.okData(shopOrderService.onPay(orderNo, payNo, payType));
     }
 }
 

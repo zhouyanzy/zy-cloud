@@ -18,6 +18,7 @@
 		<module>common-response</module>
 		<module>common-auth-client</module>
 		<module>common-provider</module>
+		<module>common-mybatis</module>
 	</modules>
 
 </project>

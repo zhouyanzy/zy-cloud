@@ -58,12 +58,12 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: www.zhouy.top:8848
+        server-addr: 81.69.162.162:8848
         # 指定注册ip
         ip: 42.192.93.125
         port: ${server.port}
       config:
-        server-addr: www.zhouy.top:8848
+        server-addr: 81.69.162.162:8848
         prefix: blog-manage
         namespace: zy
 #eureka:
@@ -76,7 +76,7 @@ spring:
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
-  typeAliasesPackage: top.zhouy.blogmanage.bean.entity
+  typeAliasesPackage: top.zhouy.blogmanage.bean.bean
   type-enums-package: top.zhouy.blogmanage.bean.type
   global-config:
     db-config:
@@ -86,7 +86,7 @@ mybatis-plus:
 security:
   oauth2:
     client:
-      id: ${spring.application.name}
+      id: auth
       client-id: blog
       client-secret: blog
       access-token-uri: http://42.192.93.125:8790/oauth/token

@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
  * @date 2020/3/13 10:46
  */
 @Configuration
-//扫描dao或者是Mapper接口
 @MapperScan("top.zhouy.blogmanage.mapper*")
 public class MybatisPlusConfig {
 

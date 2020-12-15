@@ -20,17 +20,26 @@ public class MpGenerator {
     public static void main(String[] args) {
         AutoGenerator autoGenerator = new AutoGenerator();
 
-        //全局配置
+        // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        String oPath = System.getProperty("user.dir");//得到当前项目的路径
-        gc.setOutputDir(oPath + "/shop/shop-pay/src/main/java");   //生成文件输出根目录
-        gc.setOpen(false);//生成完成后不弹出文件框
-        gc.setFileOverride(true);  //文件覆盖
-        gc.setActiveRecord(false);// 不需要ActiveRecord特性的请改为false
-        gc.setEnableCache(false);// XML 二级缓存
-        gc.setBaseResultMap(true);// XML ResultMap
-        gc.setBaseColumnList(false);// XML columList
-        gc.setAuthor("zhouYan");// 作者
+        // 得到当前项目的路径
+        String oPath = System.getProperty("user.dir");
+        // 生成文件输出根目录
+        gc.setOutputDir(oPath + "/shop/shop-pay/src/main/java");
+        // 生成完成后不弹出文件框
+        gc.setOpen(false);
+        // 文件覆盖
+        gc.setFileOverride(false);
+        // 不需要ActiveRecord特性的请改为false
+        gc.setActiveRecord(false);
+        // XML 二级缓存
+        gc.setEnableCache(false);
+        // XML ResultMap
+        gc.setBaseResultMap(true);
+        // XML columList
+        gc.setBaseColumnList(false);
+        // 作者
+        gc.setAuthor("zhouYan");
 
         // 自定义文件命名，注意 %s 会自动填充表实体属性！
         gc.setControllerName("%sController");
@@ -42,18 +51,22 @@ public class MpGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setDbType(DbType.MYSQL);   //设置数据库类型，我是postgresql
+        // 设置数据库类型，
+        dsc.setDbType(DbType.MYSQL);
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("zy");
         dsc.setPassword("123456");
-        dsc.setUrl("jdbc:mysql://47.101.151.43:3306/shop-pay?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8");  //指定数据库
+        // 指定数据库
+        dsc.setUrl("jdbc:mysql://47.101.151.43:3306/shop-pay?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8");
         autoGenerator.setDataSource(dsc);
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setNaming(NamingStrategy.underline_to_camel);      // 表名生成策略
-        strategy.setInclude(new String[] { "shop_pay_record", "shop_refund_record"});     // 需要生成的表
-        //strategy.setTablePrefix(new String[] { "blog" });
+        // 表名生成策略
+        strategy.setNaming(NamingStrategy.underline_to_camel);
+        // 需要生成的表
+        strategy.setInclude(new String[] { "shop_pay_record", "shop_refund_record"});
+        // strategy.setTablePrefix(new String[] { "blog" })
         strategy.setSuperServiceClass(null);
         strategy.setSuperServiceImplClass(null);
         strategy.setSuperMapperClass(null);
@@ -66,7 +79,7 @@ public class MpGenerator {
         pc.setService("service");
         pc.setServiceImpl("service.impl");
         pc.setMapper("mapper");
-        pc.setEntity("bean.entity");
+        pc.setEntity("bean.bean");
         pc.setXml("xml");
         autoGenerator.setPackageInfo(pc);
 
@@ -75,7 +88,7 @@ public class MpGenerator {
 
         // 配置自定义输出模板
         // 不需要其他的类型时，直接设置为null就不会成对应的模版了
-        // templateConfig.setEntity("...");
+        // templateConfig.setEntity("...")
         // 自定义模板配置，可以 copy 源码 mybatis-plus/src/main/resources/templates 下面内容修改，
         // 放置自己项目的 src/main/resources/templates 目录下, 默认名称一下可以不配置，也
         // 可以自定义模板名称 只要放到目录下，名字不变 就会采用这个模版 下面这句有没有无所谓
@@ -83,7 +96,7 @@ public class MpGenerator {
         /**
          * https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-generator/src/main/resources/templates
          */
-        // templateConfig.setEntity("/templates/entity.java");
+        // templateConfig.setEntity("/templates/bean.java")
         autoGenerator.setTemplate(templateConfig);
 
         // 执行生成

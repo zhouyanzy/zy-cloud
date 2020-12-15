@@ -1,18 +1,17 @@
 package top.zhouy.shoppay;
 
-import com.codingapi.txlcn.tc.config.EnableDistributedTransaction;
+import com.alibaba.cloud.seata.GlobalTransactionAutoConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication
+
+@SpringBootApplication(exclude = {GlobalTransactionAutoConfiguration.class})
 @EnableDiscoveryClient
-@EnableDistributedTransaction
 @ComponentScan(basePackages = {"top.zhouy"})
 @MapperScan("top.zhouy.shoppay.mapper")
 @EnableFeignClients("top.zhouy.shoppay.feign")

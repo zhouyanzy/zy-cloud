@@ -6,6 +6,7 @@ import top.zhouy.shoppay.bean.type.PayType;
 import top.zhouy.shoppay.feign.ShopOrderFeign;
 
 /**
+ * fallback
  * @author zhouYan
  * @date 2020/4/26 14:27
  */

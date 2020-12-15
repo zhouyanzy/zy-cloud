@@ -7,7 +7,8 @@ import java.util.*;
 
 /**
  * 自定义分片算法
- *
+ * @author zhouYan
+ * @date 2020/4/13 19:46
  */
 public class MyPreciseShardingAlgorithm implements PreciseShardingAlgorithm<Long> {
 

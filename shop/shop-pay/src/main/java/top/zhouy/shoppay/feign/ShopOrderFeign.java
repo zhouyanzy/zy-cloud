@@ -16,6 +16,14 @@ import top.zhouy.shoppay.fallback.ShopOrderFeignFallback;
 @FeignClient(name = "shop-order", fallback = ShopOrderFeignFallback.class)
 public interface ShopOrderFeign {
 
+    /**
+     * 支付
+     * @param orderNo
+     * @param payNo
+     * @param payType
+     * @param lcnType
+     * @return
+     */
     @RequestMapping(value = "/shopOrder/onPay", method = RequestMethod.POST)
     R onPay(@RequestParam(value = "orderNo")String orderNo, @RequestParam(value = "payNo") String payNo, @RequestParam(value = "payType") PayType payType, @RequestParam(value = "lcnType") String lcnType);
 

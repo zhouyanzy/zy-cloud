@@ -46,6 +46,8 @@
  - `9030` xxl-job-admin
  - `9040` xxl-job-executor
  - `9050` basic-admin
+ - `9100` basic-sentinel-dashboard
+ - `8901` basic-seata
 
 ## 项目地址
  - eureka：http://42.192.93.125:8760
@@ -54,7 +56,9 @@
  - lcn后台管理：http://42.192.93.125:9010/admin/index.html#/login，密码：codingapi
  - xxl后台管理：http://42.192.93.125:9030/xxl-job-admin，账号密码：admin/123456
  - spring-boot admin监控：http://42.192.93.125:9050/login，账号密码：admin/123456
- - nacos: http://www.zhouy.top:8848/nacos，账号密码：nacos/nacos
+ - nacos: http://81.69.162.162:8848/nacos，账号密码：nacos/nacos
+ - sentinel-dashboard: http://81.69.162.162:9100，账号密码：sentinel/sentinel
+ - seata: http://81.69.162.162:8091
 ## Host配置
  - 127.0.0.1 www.zhouy.top
 

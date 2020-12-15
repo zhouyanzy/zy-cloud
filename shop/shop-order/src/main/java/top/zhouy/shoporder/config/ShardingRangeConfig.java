@@ -2,6 +2,11 @@ package top.zhouy.shoporder.config;
 
 import java.util.List;
 
+/**
+ * @description: ShardingRangeConfig
+ * @author: zhouy
+ * @create: 2020-12-14 17:07:00
+ */
 public class ShardingRangeConfig {
 
 	private long start;

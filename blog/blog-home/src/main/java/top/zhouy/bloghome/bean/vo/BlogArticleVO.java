@@ -18,5 +18,4 @@ public class BlogArticleVO extends BlogArticle {
     private List<BlogArticleCategoryVO> tagList;
 
     private List<BlogMessageVO> messageList;
-
 }

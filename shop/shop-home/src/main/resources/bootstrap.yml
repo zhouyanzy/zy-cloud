@@ -45,16 +45,26 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: www.zhouy.top:8848
+        server-addr: 81.69.162.162:8848
         # 指定注册ip
         ip: 42.192.93.125
         port: ${server.port}
       config:
-        server-addr: www.zhouy.top:8848
+        server-addr: 81.69.162.162:8848
         prefix: shop-home
         namespace: zy
+    sentinel:
+      transport:
+        dashboard: 81.69.162.162:9100
+      datasource:
+        - nacos:
+            server-addr: 81.69.162.162:8848
+            data-id:  ${spring.application.name}-sentinel
+            group-id: shop
+            data-type: json
+            rule-type: flow
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/*Mapper.xml
-  typeAliasesPackage: top.zhouy.shophome.bean.entity
+  typeAliasesPackage: top.zhouy.shophome.bean.bean
   type-enums-package: top.zhouy.shophome.bean.type

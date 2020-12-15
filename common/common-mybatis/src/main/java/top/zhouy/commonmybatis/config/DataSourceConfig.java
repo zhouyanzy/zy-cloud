@@ -1,4 +1,4 @@
-package top.zhouy.bloghome.config;
+package top.zhouy.commonmybatis.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;

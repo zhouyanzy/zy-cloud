@@ -80,7 +80,7 @@ public class MpGenerator {
         pc.setService("service");
         pc.setServiceImpl("service.impl");
         pc.setMapper("mapper");
-        pc.setEntity("bean.entity");
+        pc.setEntity("bean.bean");
         pc.setXml("xml");
         autoGenerator.setPackageInfo(pc);
 
@@ -97,7 +97,7 @@ public class MpGenerator {
         /**
          * https://github.com/baomidou/mybatis-plus/tree/3.0/mybatis-plus-generator/src/main/resources/templates
          */
-        // templateConfig.setEntity("/templates/entity.java");
+        // templateConfig.setEntity("/templates/bean.java");
         autoGenerator.setTemplate(templateConfig);
 
         // 执行生成

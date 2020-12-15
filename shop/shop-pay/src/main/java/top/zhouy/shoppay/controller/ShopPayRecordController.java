@@ -9,8 +9,6 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.zhouy.commonresponse.bean.model.R;
@@ -57,17 +55,7 @@ public class ShopPayRecordController {
         shopPayRecord.setPayNo(payNo);
         shopPayRecord.setPayType(payType);
         shopPayRecord.setOrderNo(orderNo);
-        Boolean success = false;
-        switch (lcnType) {
-            case "TCC" :
-                success = shopPayRecordService.addPayRecordTCC(shopPayRecord);
-                break;
-            case "TXC" :
-                success = shopPayRecordService.addPayRecordTXC(shopPayRecord);
-                break;
-            default:
-                success = shopPayRecordService.addPayRecordLCN(shopPayRecord);
-        }
+        Boolean success = shopPayRecordService.addPayRecord(shopPayRecord);
         return R.okData(success);
     }
 
