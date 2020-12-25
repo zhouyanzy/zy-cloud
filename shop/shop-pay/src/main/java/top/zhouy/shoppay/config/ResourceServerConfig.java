@@ -1,4 +1,4 @@
-package top.zhouy.shopproduct.config;
+package top.zhouy.shoppay.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

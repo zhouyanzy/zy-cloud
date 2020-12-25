@@ -1,4 +1,4 @@
-package top.zhouy.shoppay.config;
+package top.zhouy.shoporder.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 public class DataSourceConfig {
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.druid.main")
     public DataSource druidDataSource() {
         DruidDataSource druidDataSource = new DruidDataSource();
         return druidDataSource;
@@ -36,11 +36,11 @@ public class DataSourceConfig {
         return new DataSourceProxy(druidDataSource);
     }
 
-    @Bean
+    @Bean("sqlSessionFactory")
     public SqlSessionFactory sqlSessionFactory(DataSourceProxy dataSourceProxy) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSourceProxy);
-        sqlSessionFactoryBean.setTypeAliasesPackage("top.zhouy.shoppay.bean.bean");
+        sqlSessionFactoryBean.setTypeAliasesPackage("top.zhouy.shoporder.bean");
         MybatisConfiguration configuration = new MybatisConfiguration();
         configuration.setDefaultScriptingLanguage(MybatisXMLLanguageDriver.class);
         configuration.setJdbcTypeForNull(JdbcType.NULL);

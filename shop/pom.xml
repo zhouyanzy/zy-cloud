@@ -30,6 +30,12 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
+		<dependency>
+			<groupId>top.zhouy</groupId>
+			<artifactId>common-auth-client</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<!-- 注册中心 -->
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>

@@ -42,6 +42,8 @@ spring:
            reset-enable: true
            login-username: admin
            login-password: admin
+  main:
+    allow-bean-definition-overriding: true
   cloud:
     nacos:
       discovery:
@@ -75,3 +77,14 @@ mybatis-plus:
 tx-lcn:
   client:
     manager-address: 42.192.93.125:9020
+
+security:
+  oauth2:
+    client:
+      access-token-uri: http://42.192.93.125:8790/oauth/token
+      user-authorization-uri: http://42.192.93.125:8790/oauth/authorize
+      client-id: shop
+      client-secret: shop
+    resource:
+      jwt:
+        key-uri: http://42.192.93.125:8790/oauth/token_key

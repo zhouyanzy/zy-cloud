@@ -33,7 +33,7 @@ public class ShopPayRecordServiceImpl extends ServiceImpl<ShopPayRecordMapper, S
     private ShopOrderFeign shopOrderFeign;
 
     @Override
-    @GlobalTransactional(name = "pay")
+    @GlobalTransactional(name = "pay", rollbackFor = Exception.class)
     public Boolean addPayRecord(ShopPayRecord shopPayRecord) {
         Boolean success = false;
         if (shopPayRecordMapper.insert(shopPayRecord) > 0){

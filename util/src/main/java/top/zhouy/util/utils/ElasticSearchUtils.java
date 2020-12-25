@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * ES分词搜索工具类
  * @author zhouYan
  * @date 2020/4/16 15:57
  */

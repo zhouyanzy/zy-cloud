@@ -3,11 +3,13 @@ package top.zhouy.shoporder.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import io.seata.spring.annotation.GlobalTransactional;
+import org.apache.shardingsphere.transaction.annotation.ShardingTransactionType;
+import org.apache.shardingsphere.transaction.core.TransactionType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.zhouy.shoporder.bean.entity.ShopOrder;
 import top.zhouy.shoporder.bean.type.OrderStatus;
 import top.zhouy.shoporder.bean.type.PayType;
@@ -35,7 +37,8 @@ public class ShopOrderServiceImpl extends ServiceImpl<ShopOrderMapper, ShopOrder
     private ShopOrderMapper shopOrderMapper;
 
     @Override
-    @GlobalTransactional(name = "pay")
+    @ShardingTransactionType(TransactionType.BASE)
+    @Transactional(rollbackFor = Exception.class)
     public Boolean onPay(String orderNo, String payNo, PayType payType) {
         ShopOrder shopOrder = shopOrderMapper.selectByOrderNo(orderNo);
         if (Optional.ofNullable(shopOrder).isPresent()){

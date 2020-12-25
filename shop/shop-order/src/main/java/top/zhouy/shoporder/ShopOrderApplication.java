@@ -9,7 +9,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication(exclude = {DruidDataSourceAutoConfigure.class, GlobalTransactionAutoConfiguration.class})
+@SpringBootApplication(exclude = {
+							GlobalTransactionAutoConfiguration.class,
+							DruidDataSourceAutoConfigure.class})
 @EnableDiscoveryClient
 @ComponentScan(basePackages = {"top.zhouy"})
 @MapperScan("top.zhouy.shoporder.mapper")

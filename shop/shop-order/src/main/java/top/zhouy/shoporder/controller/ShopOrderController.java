@@ -64,8 +64,7 @@ public class ShopOrderController {
     @PostMapping("/onPay")
     public R onPay(@ApiParam("订单号") @RequestParam(value = "orderNo") String orderNo,
                    @ApiParam("支付单号") @RequestParam(value = "payNo") String payNo,
-                   @ApiParam("支付方式") @RequestParam(value = "payType") PayType payType,
-                   @ApiParam("分布式事务方式，'TCC'，'LCN'，'TXC'") @RequestParam(value = "lcnType") String lcnType){
+                   @ApiParam("支付方式") @RequestParam(value = "payType") PayType payType){
         return R.okData(shopOrderService.onPay(orderNo, payNo, payType));
     }
 }

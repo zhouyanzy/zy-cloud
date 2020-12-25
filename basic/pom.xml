@@ -16,10 +16,13 @@
 
 	<modules>
 		<module>basic-auth</module>
-		<module>basic-config</module>
-		<module>basic-eureka</module>
-		<module>basic-zuul</module>
-		<module>basic-tm</module>
+		<!-- 配置中心和注册中心已经改成了nacos -->
+		<!--<module>basic-config</module>-->
+		<!--<module>basic-eureka</module>-->
+		<!-- 网关已经改成gateway -->
+		<!--<module>basic-zuul</module>-->
+		<!-- 分布式事务已改成seata -->
+		<!--<module>basic-tm</module>-->
 		<module>basic-hystrix-dashboard</module>
 		<!--<module>basic-xxl-executor</module>-->
 		<module>basic-admin</module>

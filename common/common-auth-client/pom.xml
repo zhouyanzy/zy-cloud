@@ -20,6 +20,12 @@
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 
+		<dependency>
+			<groupId>top.zhouy</groupId>
+			<artifactId>common-provider</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
 		<!-- feign -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>

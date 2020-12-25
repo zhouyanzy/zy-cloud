@@ -3,56 +3,6 @@ server:
 spring:
   application:
      name: shop-order
-  shardingsphere:
-    datasource:
-      names: master0,master0slave,master1,master1slave
-      master0:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://47.101.151.43:3306/shop-order?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
-        username: zy
-        password: 123456
-      master0slave:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://47.101.151.43:3306/shop-order1?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
-        username: zy
-        password: 123456
-      master1:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://47.101.151.43:3306/shop-order2?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
-        username: zy
-        password: 123456
-      master1slave:
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        url: jdbc:mysql://47.101.151.43:3306/shop-order3?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
-        username: zy
-        password: 123456
-    sharding:
-      tables:
-        shop_order:
-          actual-data-nodes: ds$->{0..1}.shop_order_$->{0..1}
-          table-strategy:
-            inline:
-              sharding-column: id
-              algorithm-expression: shop_order_$->{id % 2}
-      default-database-strategy:
-        standard:
-          sharding-column: buyer_id
-          precise-algorithm-class-name: top.zhouy.shoporder.config.MyPreciseShardingAlgorithm
-      default-data-source-name: ds0
-      master-slave-rules:
-        ds0:
-          master-data-source-name: master0
-          slave-data-source-names: master0slave
-        ds1:
-          master-data-source-name: master1
-          slave-data-source-names: master1slave
-    props:
-      sql:
-        show: true
   main:
     allow-bean-definition-overriding: true
   cloud:
@@ -88,3 +38,69 @@ mybatis-plus:
 tx-lcn:
   client:
     manager-address: 42.192.93.125:9020
+
+security:
+  oauth2:
+    client:
+      access-token-uri: http://42.192.93.125:8790/oauth/token
+      user-authorization-uri: http://42.192.93.125:8790/oauth/authorize
+      client-id: shop
+      client-secret: shop
+    resource:
+      jwt:
+        key-uri: http://42.192.93.125:8790/oauth/token_key
+
+#sharding_jdbc
+spring.datasource.druid.order0.type: com.alibaba.druid.pool.DruidDataSource
+spring.datasource.druid.order0.driverClassName: com.mysql.jdbc.Driver
+spring.datasource.druid.order0.url: jdbc:mysql://47.101.151.43:3306/shop-order1?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
+spring.datasource.druid.order0.username: zy
+spring.datasource.druid.order0.password: 123456
+spring.datasource.druid.order0.initialSize: 5
+spring.datasource.druid.order0.minIdle: 5
+spring.datasource.druid.order0.maxActive: 20
+spring.datasource.druid.order0.maxWait: 60000
+spring.datasource.druid.order0.timeBetweenEvictionRunsMillis: 60000
+spring.datasource.druid.order0.minEvictableIdleTimeMillis: 300000
+spring.datasource.druid.order0.validationQuery: SELECT 1 FROM DUAL
+spring.datasource.druid.order0.testWhileIdle: true
+spring.datasource.druid.order0.testOnBorrow: false
+spring.datasource.druid.order0.testOnReturn: false
+spring.datasource.druid.order0.poolPreparedStatements: true
+
+spring.datasource.druid.order1.type: com.alibaba.druid.pool.DruidDataSource
+spring.datasource.druid.order1.driverClassName: com.mysql.jdbc.Driver
+spring.datasource.druid.order1.url: jdbc:mysql://47.101.151.43:3306/shop-order2?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
+spring.datasource.druid.order1.username: zy
+spring.datasource.druid.order1.password: 123456
+spring.datasource.druid.order1.initialSize: 5
+spring.datasource.druid.order1.minIdle: 5
+spring.datasource.druid.order1.maxActive: 20
+spring.datasource.druid.order1.maxWait: 60000
+spring.datasource.druid.order1.timeBetweenEvictionRunsMillis: 60000
+spring.datasource.druid.order1.minEvictableIdleTimeMillis: 300000
+spring.datasource.druid.order1.validationQuery: SELECT 1 FROM DUAL
+spring.datasource.druid.order1.testWhileIdle: true
+spring.datasource.druid.order1.testOnBorrow: false
+spring.datasource.druid.order1.testOnReturn: false
+spring.datasource.druid.order1.poolPreparedStatements: true
+
+#   数据源基本配置
+spring.datasource.druid.main.type: com.alibaba.druid.pool.DruidDataSource
+spring.datasource.druid.main.driver-class-name: com.mysql.jdbc.Driver
+spring.datasource.druid.main.url: jdbc:mysql://47.101.151.43:3306/shop-order?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=GMT%2B8
+spring.datasource.druid.main.username: zy
+spring.datasource.druid.main.password: 123456
+spring.datasource.druid.main.initialSize: 5
+spring.datasource.druid.main.minIdle: 5
+spring.datasource.druid.main.maxActive: 20
+spring.datasource.druid.main.maxWait: 60000
+spring.datasource.druid.main.timeBetweenEvictionRunsMillis: 60000
+spring.datasource.druid.main.minEvictableIdleTimeMillis: 300000
+spring.datasource.druid.main.validationQuery: SELECT 1 FROM DUAL
+spring.datasource.druid.main.testWhileIdle: true
+spring.datasource.druid.main.testOnBorrow: false
+spring.datasource.druid.main.testOnReturn: false
+spring.datasource.druid.main.poolPreparedStatements: true
+
+seata.txServiceGroup: shop-order-seata

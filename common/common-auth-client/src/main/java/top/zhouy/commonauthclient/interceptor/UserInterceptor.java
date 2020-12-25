@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 import static top.zhouy.commonauthclient.entity.UserUtils.LOCAL_USER;
+import static top.zhouy.commonauthclient.interceptor.Oauth2FeignInterceptor.TOKEN;
 
 /**
  * @description: 用户拦截器，保存用户信息
@@ -20,7 +21,7 @@ public class UserInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String token = request.getHeader("token");
+        String token = request.getHeader(TOKEN);
         if (StringUtils.isNotBlank(token)) {
             UserVO userVO = JSONUtil.toBean(JSONUtil.parseObj(((Map)JSONUtil.parseObj(token).get("body")).get("user")), UserVO.class);
             LOCAL_USER.set(userVO);

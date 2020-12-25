@@ -81,13 +81,10 @@ mybatis-plus:
 security:
   oauth2:
     client:
-      id: auth
-      client-id: shop
-      client-secret: shop
       access-token-uri: http://42.192.93.125:8790/oauth/token
       user-authorization-uri: http://42.192.93.125:8790/oauth/authorize
-      authentication-scheme: header
+      client-id: shop
+      client-secret: shop
     resource:
       jwt:
         key-uri: http://42.192.93.125:8790/oauth/token_key
-      token-info-uri: http://42.192.93.125:8790/oauth/check_token #检查令牌

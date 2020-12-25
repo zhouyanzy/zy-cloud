@@ -1,8 +1,6 @@
 package top.zhouy.util.utils;
 
-import cn.hutool.json.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import top.zhouy.commonresponse.bean.enums.ErrorCode;
@@ -16,6 +14,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Redis工具类
  * @author zhouYan
  * @date 2020/4/16 11:54
  */
@@ -55,8 +54,7 @@ public class RedisUtils {
 
     /**
      * redis分布式id
-     * @param key 锁对象
-     * @param time 锁住时间，秒
+     * @param key 业务类型
      */
     public static Long getId(String key){
         return redisUtils.redisTemplate.opsForValue().increment(key);
@@ -83,10 +81,10 @@ public class RedisUtils {
                     }
                     continue;
                 }
-                String targeMessage = String.valueOf(values.iterator().next());
+                String messageRepeat = String.valueOf(values.iterator().next());
                 // 利用redis单线程处理重复消费问题
-                if (redisUtils.redisTemplate.opsForZSet().remove("queue::delay::message", targeMessage) > 0) {
-                    System.out.println(targeMessage);
+                if (redisUtils.redisTemplate.opsForZSet().remove("queue::delay::message", messageRepeat) > 0) {
+                    System.out.println(messageRepeat);
                 }
             }
         });
