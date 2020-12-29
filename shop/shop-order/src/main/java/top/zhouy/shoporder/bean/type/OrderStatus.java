@@ -9,6 +9,8 @@ public enum OrderStatus {
 
     SUCCESS,
 
-    PAID
+    PAID,
+
+    SUBMITTED
 
 }

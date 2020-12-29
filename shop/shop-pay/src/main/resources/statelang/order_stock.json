@@ -1,0 +1,92 @@
+{
+    "Name": "pay",
+    "Comment": "pay and change order",
+    "StartState": "orderSAGA",
+    "Version": "0.0.1",
+    "States": {
+        "orderSAGA": {
+            "Type": "ServiceTask",
+            "ServiceName": "shopPayRecordService",
+            "ServiceMethod": "addPayRecordCommit",
+            "CompensateState": "addPayRecordCompensate",
+            "Next": "onPay",
+            "Input": [
+                "$.[shopPayRecord]"
+            ],
+            "Output": {
+                "saveOrderResult": "$.#root"
+            },
+            "Status": {
+                "#root == true": "SU",
+                "#root == false": "FA",
+                "$Exception{java.lang.Throwable}": "UN"
+            },
+            "Catch": [
+                {
+                    "Exceptions": [
+                        "java.lang.Throwable"
+                    ],
+                    "Next": "Fail"
+                }
+            ]
+        },
+
+        "addPayRecordCompensate": {
+            "Type": "ServiceTask",
+            "ServiceName": "shopPayRecordService",
+            "ServiceMethod": "addPayRecordCompensate",
+            "Input": [
+                "$.[shopPayRecord]"
+            ]
+        },
+
+        "onPay": {
+            "Type": "ServiceTask",
+            "ServiceName": "shopPayRecordService",
+            "ServiceMethod": "onPay",
+            "CompensateState": "onPayCompensate",
+            "Input": [
+                "$.[shopPayRecord]"
+            ],
+            "Output": {
+                "ReduceStorageResult": "$.#root"
+            },
+            "Status": {
+                "#root == true": "SU",
+                "#root == false": "FA",
+                "$Exception{java.lang.Throwable}": "UN"
+            },
+            "Catch": [
+                {
+                    "Exceptions": [
+                        "java.lang.Throwable"
+                    ],
+                    "Next": "CompensationTrigger"
+                }
+            ],
+            "Next": "Succeed"
+        },
+
+        "onPayCompensate": {
+            "Type": "ServiceTask",
+            "ServiceName": "shopPayRecordService",
+            "ServiceMethod": "onPayCompensate",
+            "Input": [
+                "$.[shopPayRecord]"
+            ]
+        },
+
+        "CompensationTrigger": {
+            "Type": "CompensationTrigger",
+            "Next": "Fail"
+        },
+        "Succeed": {
+            "Type":"Succeed"
+        },
+        "Fail": {
+            "Type":"Fail",
+            "ErrorCode": "500",
+            "Message": "purchase failed"
+        }
+    }
+}

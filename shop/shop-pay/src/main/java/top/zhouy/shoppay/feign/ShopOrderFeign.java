@@ -1,12 +1,13 @@
 package top.zhouy.shoppay.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.zhouy.commonresponse.bean.model.R;
 import top.zhouy.shoppay.bean.type.PayType;
-import top.zhouy.shoppay.fallback.ShopOrderFeignFallback;
+import top.zhouy.shoppay.feign.fallback.ShopOrderFeignFallback;
 
 /**
  * 订单服务的feign
@@ -14,6 +15,7 @@ import top.zhouy.shoppay.fallback.ShopOrderFeignFallback;
  * @date 2020/4/15 14:12
  */
 @FeignClient(name = "shop-order", fallback = ShopOrderFeignFallback.class)
+@Component
 public interface ShopOrderFeign {
 
     /**
@@ -26,5 +28,16 @@ public interface ShopOrderFeign {
      */
     @RequestMapping(value = "/shopOrder/onPay", method = RequestMethod.POST)
     R onPay(@RequestParam(value = "orderNo")String orderNo, @RequestParam(value = "payNo") String payNo, @RequestParam(value = "payType") PayType payType, @RequestParam(value = "lcnType") String lcnType);
+
+    /**
+     * 支付，补偿
+     * @param orderNo
+     * @param payNo
+     * @param payType
+     * @param lcnType
+     * @return
+     */
+    @RequestMapping(value = "/shopOrder/onPayCompensate", method = RequestMethod.POST)
+    R onPayCompensate(@RequestParam(value = "orderNo")String orderNo, @RequestParam(value = "payNo") String payNo, @RequestParam(value = "payType") PayType payType, @RequestParam(value = "lcnType") String lcnType);
 
 }

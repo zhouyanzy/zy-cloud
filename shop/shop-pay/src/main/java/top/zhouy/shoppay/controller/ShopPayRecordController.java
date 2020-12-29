@@ -49,12 +49,20 @@ public class ShopPayRecordController {
     )
     public R onPay(@ApiParam("订单号") @RequestParam(value = "orderNo") String orderNo,
                    @ApiParam("支付单号") @RequestParam(value = "payNo") String payNo,
-                   @ApiParam("支付方式") @RequestParam(value = "payType") PayType payType){
+                   @ApiParam("支付方式") @RequestParam(value = "payType") PayType payType,
+                   @ApiParam("事务类型，默认AT") @RequestParam(value = "type", defaultValue = "AT") String type){
         ShopPayRecord shopPayRecord = new ShopPayRecord();
         shopPayRecord.setPayNo(payNo);
         shopPayRecord.setPayType(payType);
         shopPayRecord.setOrderNo(orderNo);
-        Boolean success = shopPayRecordService.addPayRecord(shopPayRecord);
+        Boolean success = false;
+        if ("TCC".equals(type)) {
+            success = shopPayRecordService.addPayRecordTcc(shopPayRecord);
+        } else if ("SAGA".equals(type)) {
+            success = shopPayRecordService.addPayRecordSaga(shopPayRecord);
+        } else {
+            success = shopPayRecordService.addPayRecord(shopPayRecord);
+        }
         return R.okData(success);
     }
 

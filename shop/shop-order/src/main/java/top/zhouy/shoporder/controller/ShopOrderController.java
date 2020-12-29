@@ -67,5 +67,20 @@ public class ShopOrderController {
                    @ApiParam("支付方式") @RequestParam(value = "payType") PayType payType){
         return R.okData(shopOrderService.onPay(orderNo, payNo, payType));
     }
+
+    /**
+     * 支付完成
+     * @param orderNo
+     * @param payNo
+     * @param payType
+     * @return
+     */
+    @ApiOperation("支付完成，修改订单信息")
+    @PostMapping("/onPayCompensate")
+    public R onPayCompensate(@ApiParam("订单号") @RequestParam(value = "orderNo") String orderNo,
+                   @ApiParam("支付单号") @RequestParam(value = "payNo") String payNo,
+                   @ApiParam("支付方式") @RequestParam(value = "payType") PayType payType){
+        return R.okData(shopOrderService.onPayCompensate(orderNo, payNo, payType));
+    }
 }
 

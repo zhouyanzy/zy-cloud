@@ -1,7 +1,9 @@
-package top.zhouy.shoppay.fallback;
+package top.zhouy.shoppay.feign.fallback;
 
 import org.springframework.stereotype.Component;
+import top.zhouy.commonresponse.bean.enums.ErrorCode;
 import top.zhouy.commonresponse.bean.model.R;
+import top.zhouy.commonresponse.exception.BsException;
 import top.zhouy.shoppay.bean.type.PayType;
 import top.zhouy.shoppay.feign.ShopOrderFeign;
 
@@ -15,6 +17,12 @@ public class ShopOrderFeignFallback implements ShopOrderFeign {
 
     @Override
     public R onPay(String orderNo, String payNo, PayType payType, String lcnType) {
-        return R.fail("网络错误，请稍候重试");
+        throw new BsException(ErrorCode.UNKNOWN, "支付调用失败");
     }
+
+    @Override
+    public R onPayCompensate(String orderNo, String payNo, PayType payType, String lcnType) {
+        throw new BsException(ErrorCode.UNKNOWN, "支付补偿调用失败");
+    }
+
 }
