@@ -26,12 +26,11 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        response.setContentType("application/json;charset=UTF-8");
         Map map = new HashMap();
         map.put("code", "400");
         map.put("msg", accessDeniedException.getMessage());
         map.put("timestamp", System.currentTimeMillis());
-        response.setContentType("application/json");
+        response.setContentType("application/json;charset=UTF-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write(objectMapper.writeValueAsString(map));
     }

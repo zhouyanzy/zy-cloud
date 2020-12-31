@@ -1,5 +1,6 @@
 package top.zhouy.commonresponse.exception;
 
+import com.alibaba.csp.sentinel.Tracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,20 +24,20 @@ class MyExceptionHandler {
 	 */
 	@ExceptionHandler(BsException.class)
 	public R handleMyException(BsException e){
-		if (ErrorCode.LCN.equals(e.getErrorCode())) {
-			throw e;
-		}
+		Tracer.trace(e);
 		return R.fail(e.getErrorCode().getCode(), e.getErrorCode().getMsg());
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public R handlerNoFoundException(Exception e){
+		Tracer.trace(e);
 		log.error(e.getMessage(), e);
 		return R.exception(ErrorCode.PATH_NOT_FOUND);
 	}
 
 	@ExceptionHandler(Exception.class)
 	public R handleException(Exception e){
+		Tracer.trace(e);
 		log.error(e.getMessage(), e);
 		return R.exception();
 	}
