@@ -27,6 +27,7 @@ import java.util.Map;
  * @create: 2020-12-21 11:16:00
  */
 public class Oauth2FeignInterceptor implements RequestInterceptor {
+
     public static final String BEARER = "bearer";
     public static final String AUTHORIZATION = "Authorization";
     public static final String TOKEN = "token";

@@ -68,7 +68,8 @@ public class ShopPayRecordController {
 
     public R onPayFallback(@ApiParam("订单号") @RequestParam(value = "orderNo") String orderNo,
                    @ApiParam("支付单号") @RequestParam(value = "payNo") String payNo,
-                   @ApiParam("支付方式") @RequestParam(value = "payType") PayType payType) {
+                   @ApiParam("支付方式") @RequestParam(value = "payType") PayType payType,
+                   @ApiParam("事务类型，默认AT") @RequestParam(value = "type", defaultValue = "AT") String type) {
         return R.fail("支付接口熔断处理--请稍候重试！");
     }
 

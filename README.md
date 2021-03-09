@@ -70,6 +70,7 @@
  - nacos: http://81.69.162.162:8848/nacos，账号密码：nacos/nacos
  - sentinel-dashboard: http://81.69.162.162:9100，账号密码：sentinel/sentinel
  - seata: http://81.69.162.162:8091
+ - zipkin: http://81.69.162.162:9411
 
 ## Host配置
  - 127.0.0.1 www.zhouy.top

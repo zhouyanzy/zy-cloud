@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import top.zhouy.commonauthclient.interceptor.FeignResultAspect;
 import top.zhouy.commonauthclient.interceptor.UserInterceptor;
 
 /**
@@ -24,4 +25,8 @@ public class WebConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(userInterceptor()).addPathPatterns("/**");
     }
 
+    @Bean
+    public FeignResultAspect feignResultAspect() {
+        return new FeignResultAspect();
+    }
 }
